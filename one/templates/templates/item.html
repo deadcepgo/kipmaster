@@ -1,0 +1,250 @@
+{%extends "templates/base.html"%}
+{% block title%}{{d.name}}{%endblock%}
+{%block content%}
+	<h2 class="text-center"><a href="/item/?d_id={{d.id}}">{{d.name}}</a></h2>
+	<h3 class="text-center"><a href="/lobject/?par_id={{d.lobject.first.id}}"><p>[{{d.lobject.first.name}} / {% for elem in d.lobject.first.get_parents%}{{elem.name}} / {%endfor%}]</p></a></h3>
+	<h4 class="text-center"><a href="/item/change/?d_id={{d.id}}">Изменить</a></h4>
+	<div class="container text-center datchik">
+		<div class="row">
+			<div class="col-md-6">
+				<table class="table table-bordered">
+					<tbody>
+						<tr>
+							<td class="text-right"><p>Название</p></td>
+							<td><p>{{d.name}}</p><p style="font-size: 10px;">Отображается в бланке ТО как "Наименование"</p></td>
+						</tr>
+						<tr>
+							<td class="text-right"><p>Марка</p></td>
+							<td><p>{{d.mark}}</p><p style="font-size: 10px;">Отображается в бланке ТО как "Марка, тип"</p></td>
+						</tr>
+						<tr>
+							<td class="text-right"><p>Модель</p></td>
+							<td><p>{{d.model}}</p><p style="font-size: 10px;">Отображается в бланке ТО как "Марка, тип"</p></td>
+						</tr>
+						<tr>
+							<td class="text-right"><p>Серийный номер</p></td>
+							<td><p>{{d.serial}}</p><p style="font-size: 10px;">Отображается в бланке ТО как "Серийный номер"</p></td>
+						</tr>
+						<tr>
+							<td class="text-right"><p>Дата поверки</p></td>
+							<td><p>{{d.date_pov}}</p><p style="font-size: 10px;">Отображается в бланке ТО как "Дата последней поверки"</p></td>
+						</tr>
+						<tr>
+							<td class="text-right"><p>TI</p></td>
+							<td><p>{{d.ti}}</p></td>
+						</tr>
+						<tr>
+							<td class="text-right"><p>Минимальное значение</p></td>
+							<td><p>{{d.min_z}}</p></td>
+						</tr>
+						<tr>
+							<td class="text-right"><p>Погрешность</p></td>
+							<td><p>{{d.sig}}</p></td>
+						</tr>
+						<tr>
+							<td class="text-right"><p>Срок службы</p></td>
+							<td><p>{{d.sr_sl}}</p></td>
+						</tr>
+						<tr>
+							<td class="text-right"><p>Отметка о поверке</p></td>
+							<td><p>{{d.otm_o_pov}}</p></td>
+						</tr>
+					</tbody>
+				</table>
+			</div>
+			<div class="col-md-6">
+				<table class="table table-bordered">
+					<tbody>
+						<tr>
+							<td class="text-right"><p>Дата изготовления</p></td>
+							<td><p>{{d.date_mk}}</p></td>
+						</tr>
+						<tr>
+							<td class="text-right"><p>Единица измерения</p></td>
+							<td><p>{{d.par}}</p></td>
+						</tr>
+						<tr>
+							<td class="text-right"><p>Статус</p></td>
+							<td><p>{%if d.active == 'act'%}В РАБОТЕ{%elif d.active == 'not'%}НЕ В РАБОТЕ{%elif d.active == 'rez'%} РЕЗЕРВ {%endif%}</p></td>
+						</tr>
+						<tr>
+							<td class="text-right"><p>Тип датчика</p></td>
+							<td><p>{{d.dattype}}</p></td>
+						</tr>
+						<tr>
+							<td class="text-right"><p>Теги</p></td>
+							<td><p>{%for tag in d.tags.all%}{{tag}}, {%endfor%}</p></td>
+						</tr>
+						<tr>
+							<td class="text-right"><p>Расположение</p></td>
+							<td><p>{{d.lobject.first.name}} / {% for elem in d.lobject.first.get_parents%}{{elem.name}} / {%endfor%}</p></td>
+						</tr>
+						<tr>
+							<td class="text-right"><p>Гос. реестр</p></td>
+							<td><p>{{d.greer}}</p></td>
+						</tr>
+						<tr>
+							<td class="text-right"><p>Максимальное значение</p></td>
+							<td><p>{{d.max_z}}</p></td>
+						</tr>
+						<tr>
+							<td class="text-right"><p>Межповерочный интервал</p></td>
+							<td><p>{{d.mpi}}</p></td>
+						</tr>
+						<tr>
+							<td class="text-right"><p>Измеряемый параметр</p></td>
+							<td><p>{{d.par_iz}}</p></td>
+						</tr>
+						<tr>
+							<td class="text-right"><p>Заземлено?</p></td>
+							<td><p>{{d.pe}}</p></td>
+						</tr>
+						<tr>
+							<td class="text-right"><p>Бирки кабель</p></td>
+							<td><p>{{d.bir_tr}}</p></td>
+						</tr>
+						<tr>
+							<td class="text-right"><p>Бирка прибор</p></td>
+							<td><p>{{d.bir_pr}}</p></td>
+						</tr>
+					</tbody>
+				</table>
+			</div>
+		</div>
+		<ul class="nav nav-tabs">
+			<li class="active"><a data-toggle="tab" href="#comments">Коментарии</a></li>
+			<li><a data-toggle="tab" href="#docs">Документы</a></li>
+		</ul>
+		<div class="tab-content">
+		<div id="docs" class="row text-left tab-pane fade">
+			<div class="col-md-4"><h4>Приложенные документы</h4></div>
+			<div class="col-md-8 text-right"><a href="#myModal1" class="btn btn-primary" data-toggle="modal">Добавить документ</a></div>
+			<div class="col-md-12 text-left">
+			<ul>
+				{%if files%}
+					{%for file in files%}
+						<li class="file">
+							<ul>
+								<li class="file-elem"><a href="{{file.document.url}}">{{file.name}}</a></li>
+								<li class="file-elem">{{file.document.size|filesizeformat}}</li>
+								<li class="file-elem"><h6>{{file.date_pub}}</h6></li>
+							</ul>
+						</li>
+					{%endfor%}
+				{%else%}
+					<li class="file">Файлы отсутствуют</li>
+				{%endif%}
+			</ul>
+			</div>
+		</div>
+		<div id="comments" class="row text-left tab-pane fade in active">
+			<div class="col-md-4">
+				<h4>Коментарии</h4>
+			</div>
+			<div class="col-md-8 text-right"><a href="#myModal" class="btn btn-primary" data-toggle="modal">Добавить коментарий</a></div>
+			<div class="col-md-12 text-left">
+			{%if comments%}
+				{%for comment in comments%}
+					<div class="col-md-1">{{comment.user}}</div>
+					<div class="col-md-9">
+						<p class="text-left">{{comment.text}}</p>
+						<p><h6 class="text-right">{{comment.date_pub}}</h6></p>
+					</div>
+					<div class="col-md-2">
+						<p>Приложенный файл</p>
+						{%if comment.file%}
+							<p><a href="{{comment.file.document.url}}">{{comment.file.name}}</a></p>
+							<p>{{comment.file.document.size}}b</p>
+						{%else%}
+							<p>Файл отсутствует</p>
+						{%endif%}
+					</div>
+				{%endfor%}
+			{% else %} 
+				<ul><li>Коментарии отсутствуют</li></ul>
+			{% endif %}
+			</div>
+		</div>
+		</div>
+		
+		
+		<div id="myModal" class="modal fade">
+  		<form action="" method="post" enctype="multipart/form-data" class="text-left form-horizontal">
+  		<div class="modal-dialog">
+    		<div class="modal-content">
+      			<!-- Заголовок модального окна -->
+      			<div class="modal-header">
+        			<button type="button" class="close" data-dismiss="modal" aria-hidden="true">×</button>
+        			<h4 class="modal-title">Добавить коментарий</h4>
+      			</div>
+      			<!-- Основное содержимое модального окна -->
+      			<div class="modal-body" style="padding:15px;">
+        			
+						{%csrf_token%}
+						
+							<div class="form-group">
+			    				<label for="inputname" class="col-sm-2 control-label">Пользователь:</label>
+			    				<div class="col-sm-10">
+			      					<input type="text" class="form-control" id="inputname" name="user" placeholder="Имя пользователя">
+			    				</div>
+							</div>
+							<div class="form-group">
+			    				<label for="inputcomment" class="col-sm-2 control-label">Коментарий</label>
+			    				<div class="col-sm-10">
+				    				<textarea name="text" id="inputcomment" cols="75" rows="5" class="form-control" placeholder="Коментарий"></textarea>
+			    				</div>
+							</div>
+						
+					
+      			</div>
+      			<!-- Футер модального окна -->
+      			<div class="modal-footer">
+        			<button type="button" class="btn btn-default" data-dismiss="modal">Закрыть</button>
+        			<button type="submit" class="btn btn-primary">Отправить</button>
+      			</div>
+    		</div>
+  		</div>
+  		</form>
+	</div>
+	<div id="myModal1" class="modal fade">
+  		<form action="/uploadfile/" method="post" id="fileup" enctype="multipart/form-data" class="text-left">
+  		<div class="modal-dialog">
+    		<div class="modal-content">
+      			<!-- Заголовок модального окна -->
+      			<div class="modal-header">
+        			<button type="button" class="close" data-dismiss="modal" aria-hidden="true">×</button>
+        			<h4 class="modal-title">Добавить документ</h4>
+      			</div>
+      			<!-- Основное содержимое модального окна -->
+      			<div class="modal-body" style="padding:15px;">
+        			
+						{%csrf_token%}
+						
+							<div class="form-group">
+			    				<label for="inputfilename" class="col-sm-3 control-label">Имя файла</label>
+			    				<div class="col-sm-9">
+			      					<input type="text" class="form-control" id="inputfilename" name="name" placeholder="Введите имя файла">
+			    				</div>
+							</div>
+							<div class="form-group">
+			    				<label for="document" class="col-sm-3 control-label">Файл</label>
+			    				<div class="col-sm-9">
+				    				<input type="file" name="document" id="document">
+			    				</div>
+			    				<input type="hidden" name="parent" value="item">
+			    				<input type="hidden" name="parent_id" value="{{d.id}}">
+							</div>
+						<input type="text" name="parents" class="hidden" value="{{d.id}}">
+					
+      			</div>
+      			<!-- Футер модального окна -->
+      			<div class="modal-footer">
+        			<button type="button" class="btn btn-default" data-dismiss="modal">Закрыть</button>
+        			<button type="submit" class="btn btn-primary">Загрузить</button>
+      			</div>
+    		</div>
+  		</div>
+  		</form>
+	</div>
+	</div>
+{%endblock%}

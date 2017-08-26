@@ -1,0 +1,115 @@
+{%extends "templates/base.html"%}
+{% block title%}Перечень датчиков{%endblock%}
+{%block content%}
+	<h2 class="text-center">Перечень оборудования</h2>
+	<div class="container text-center">
+		<form action="" method="get">
+		<div class="row">
+			<p><input type="search" style="width: 500px;" name="q"> <button class="btn">Мне повезет!</button></p>
+			<p><label for="name"><input type="checkbox" name="name" value="True">Название</label> <label for="serial"><input type="checkbox" name="serial" value="True">Серийный номер</label> <label for="date_p"><input type="checkbox" name="date_p" value="True">Дата поверки</label> <label for="status"><input type="checkbox" name="status" value="True">Состояние</label> <label for="mark"><input type="checkbox" name="mark" value="True">Марка</label> <label for="model"><input type="checkbox" name="model" value="True">Модель</label> <label for="par_iz"><input type="checkbox" name="par_iz" value="True">Измеряемый параметр</label> <label for="rasp"><input type="checkbox" name="dattype" value="True">Расположение*</label></p>
+			
+			<p>Для того чтобы добавить оборудование, нажмите <a href="/item/add/" class="btn btn-primary btn-xs">Создать оборудование</a></p>
+		</div>
+		<div class="row">
+
+			
+			<div class="col-md-2">
+				<select name="locate" id="">
+					<option value="">######</option>
+					{%for loc in locations%}
+					{%if parent.id == loc.id%}
+						<option value="{{loc.id}}">{{loc}}</option>
+					{%else%}
+					<option value="{{loc.id}}">{{loc}}</option>
+					{%endif%}
+					{%endfor%}
+				</select>
+				
+				<div class="menu-tree">
+					
+				</div>
+			</div>
+			
+		</div>
+		<input type="submit" class="search-submit hide" value="Поиск">
+		</form>
+		<table style="width: 100%;" class="table table-bordered table-hover">
+			<thead>
+				<tr>
+					<th>ID</th>
+					<th>Название</th>
+					<th>Серийный номер</th>
+					<th>Дата поверки</th>
+					<th>Состояние</th>
+					<th>Расположение</th>
+					<th>Параметр</th>
+					
+				</tr>
+			</thead>
+			<tbody>
+				{%for datch in d%}
+					<tr>
+						<td><p>{{datch.id}}</p></td>
+						<td><p><a href="/item/?d_id={{datch.id}}">{{datch.name}}</a></p></td>
+						<td><p>{{datch.serial}}</p></td>
+						<td><p>{{datch.date_pov}}</p></td>
+						<td><p style="background-color:{%if datch.active == 'act' %} #B2E8B2;{%elif datch.active == 'not'%}#E08989;{%elif datch.active == 'rez'%}#E6E25C;{%endif%}">{%if datch.active == 'act'%}В РАБОТЕ{%elif datch.active == 'not'%} НЕ В РАБОТЕ {%elif datch.active == 'rez'%} РЕЗЕРВ {%endif%}</p></td>
+						<td>
+							<p>	
+								<a href="?locate={{datch.lobject.first.id}}">{{datch.lobject.first.name}}</a>
+								{%for cat in datch.lobject.first.get_ancestors.reverse%} &#8592;
+									
+									<a href="?locate={{cat.id}}">{{cat.name}}</a>
+									
+								{%endfor%}
+							</p>
+							
+						</td>
+						<td><p>{{datch.par_iz}}</p></td>
+						
+					</tr>
+				{%endfor%}
+			</tbody>
+		</table>
+		
+		<div class="pagination">
+    		{% if d.paginator.num_pages > 1 %}
+    		<span class="step-links">
+    			<a href="?page=1&q={{request.GET.q}}&locate={{request.GET.locate}}&name={{request.GET.name}}&serial={{request.GET.serial}}&date_p={{request.GET.date_p}}&dattype={{request.GET.dattype}}" class="btn btn-default"><<</a>
+    			{%if d.number == 2%}
+					<a href="?page={{ d.number|add:'-1' }}&q={{request.GET.q}}&locate={{request.GET.locate}}&name={{request.GET.name}}&serial={{request.GET.serial}}&date_p={{request.GET.date_p}}&dattype={{request.GET.dattype}}" class="btn btn-default">{{ d.number|add:'-1' }}</a>
+				{%elif d.number == 3%}
+					<a href="?page={{ d.number|add:'-2' }}&q={{request.GET.q}}&locate={{request.GET.locate}}&name={{request.GET.name}}&serial={{request.GET.serial}}&date_p={{request.GET.date_p}}&dattype={{request.GET.dattype}}" class="btn btn-default">{{ d.number|add:'-2' }}</a>
+    				<a href="?page={{ d.number|add:'-1' }}&q={{request.GET.q}}&locate={{request.GET.locate}}&name={{request.GET.name}}&serial={{request.GET.serial}}&date_p={{request.GET.date_p}}&dattype={{request.GET.dattype}}" class="btn btn-default">{{ d.number|add:'-1' }}</a>
+    			{%elif d.number > 3%}
+    				<a href="?page={{ d.number|add:'-3' }}&q={{request.GET.q}}&locate={{request.GET.locate}}&name={{request.GET.name}}&serial={{request.GET.serial}}&date_p={{request.GET.date_p}}&dattype={{request.GET.dattype}}" class="btn btn-default">{{ d.number|add:'-3' }}</a>
+    				<a href="?page={{ d.number|add:'-2' }}&q={{request.GET.q}}&locate={{request.GET.locate}}&name={{request.GET.name}}&serial={{request.GET.serial}}&date_p={{request.GET.date_p}}&dattype={{request.GET.dattype}}" class="btn btn-default">{{ d.number|add:'-2' }}</a>
+    				<a href="?page={{ d.number|add:'-1' }}&q={{request.GET.q}}&locate={{request.GET.locate}}&name={{request.GET.name}}&serial={{request.GET.serial}}&date_p={{request.GET.date_p}}&dattype={{request.GET.dattype}}" class="btn btn-default">{{ d.number|add:'-1' }}</a>
+    			{%endif%}
+    			<span class="btn btn-sussecced">{{ d.number }}</span>
+    			
+    			{%if d.number == d.paginator.num_pages|add:'-1'%}
+    				<a href="?page={{ d.number|add:'1' }}&q={{request.GET.q}}&locate={{request.GET.locate}}&name={{request.GET.name}}&serial={{request.GET.serial}}&date_p={{request.GET.date_p}}&dattype={{request.GET.dattype}}" class="btn btn-default">{{ d.number|add:'1' }}</a>
+    				<a href="?page={{ d.paginator.num_pages}}&q={{request.GET.q}}&locate={{request.GET.locate}}&name={{request.GET.name}}&serial={{request.GET.serial}}&date_p={{request.GET.date_p}}&dattype={{request.GET.dattype}}" class="btn btn-default">>></a>
+    			{%elif d.number == d.paginator.num_pages|add:'-2'%}
+					<a href="?page={{ d.number|add:'1' }}&q={{request.GET.q}}&locate={{request.GET.locate}}&name={{request.GET.name}}&serial={{request.GET.serial}}&date_p={{request.GET.date_p}}&dattype={{request.GET.dattype}}" class="btn btn-default">{{ d.number|add:'1' }}</a>
+    				<a href="?page={{ d.number|add:'2' }}&q={{request.GET.q}}&locate={{request.GET.locate}}&name={{request.GET.name}}&serial={{request.GET.serial}}&date_p={{request.GET.date_p}}&dattype={{request.GET.dattype}}" class="btn btn-default">{{ d.number|add:'2' }}</a>
+    				<a href="?page={{ d.paginator.num_pages}}&q={{request.GET.q}}&locate={{request.GET.locate}}&name={{request.GET.name}}&serial={{request.GET.serial}}&date_p={{request.GET.date_p}}&dattype={{request.GET.dattype}}" class="btn btn-default">>></a>
+    			{%elif d.number == d.paginator.num_pages|add:'-3'%}
+    				<a href="?page={{ d.number|add:'1' }}&q={{request.GET.q}}&locate={{request.GET.locate}}&name={{request.GET.name}}&serial={{request.GET.serial}}&date_p={{request.GET.date_p}}&dattype={{request.GET.dattype}}" class="btn btn-default">{{ d.number|add:'1' }}</a>
+    				<a href="?page={{ d.number|add:'2' }}&q={{request.GET.q}}&locate={{request.GET.locate}}&name={{request.GET.name}}&serial={{request.GET.serial}}&date_p={{request.GET.date_p}}&dattype={{request.GET.dattype}}" class="btn btn-default">{{ d.number|add:'2' }}</a>
+    				<a href="?page={{ d.number|add:'3' }}&q={{request.GET.q}}&locate={{request.GET.locate}}&name={{request.GET.name}}&serial={{request.GET.serial}}&date_p={{request.GET.date_p}}&dattype={{request.GET.dattype}}" class="btn btn-default">{{ d.number|add:'3' }}</a>
+    				<a href="?page={{ d.paginator.num_pages}}&q={{request.GET.q}}&locate={{request.GET.locate}}&name={{request.GET.name}}&serial={{request.GET.serial}}&date_p={{request.GET.date_p}}&dattype={{request.GET.dattype}}" class="btn btn-default">>></a>
+    			{%elif not d.number == d.paginator.num_pages%}
+    				<a href="?page={{ d.number|add:'1' }}&q={{request.GET.q}}&locate={{request.GET.locate}}&name={{request.GET.name}}&serial={{request.GET.serial}}&date_p={{request.GET.date_p}}&dattype={{request.GET.dattype}}" class="btn btn-default">{{ d.number|add:'1' }}</a>
+    				<a href="?page={{ d.number|add:'2' }}&q={{request.GET.q}}&locate={{request.GET.locate}}&name={{request.GET.name}}&serial={{request.GET.serial}}&date_p={{request.GET.date_p}}&dattype={{request.GET.dattype}}" class="btn btn-default">{{ d.number|add:'2' }}</a>
+    				<a href="?page={{ d.number|add:'3' }}&q={{request.GET.q}}&locate={{request.GET.locate}}&name={{request.GET.name}}&serial={{request.GET.serial}}&date_p={{request.GET.date_p}}&dattype={{request.GET.dattype}}" class="btn btn-default">{{ d.number|add:'3' }}</a>
+					<a href="?page={{ d.paginator.num_pages}}&q={{request.GET.q}}&locate={{request.GET.locate}}&name={{request.GET.name}}&serial={{request.GET.serial}}&date_p={{request.GET.date_p}}&dattype={{request.GET.dattype}}" class="btn btn-default">>></a>
+    			{%endif%}
+    		</span>
+    		{%endif%}
+    		{{in_this_month}}
+		</div>
+	</div>
+
+{%endblock%}

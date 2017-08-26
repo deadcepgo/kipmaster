@@ -1,0 +1,70 @@
+{%extends "templates/base.html"%}
+
+{% block title%}Объекты{%endblock%}
+
+{%block content%}
+
+
+
+<div class="container">
+    <p><br></p>
+    <ul>
+    {%for obj in main_objs%}
+        <li><a href="/to/?par={{obj.id}}">{{obj.label}}</a></li>
+    {%endfor%}
+    </ul>
+    <p><br></p>
+    {{request.POST}}
+    <p>----------------------------------------------------------------------------------------------------------------------------------------------</p>
+    <p><br></p>
+    <form action="" method="POST">
+        {%csrf_token%}
+        <select name="to" id="">
+            <option value="1">Месячный акт ТО КЦДНГ</option>
+            <option value="2">Месячный акт ТО ЦТВС</option>
+        </select>
+        <select name="kcdng_rul" id="kcdng_rul">
+            <option value="">Выберите рулевого</option>
+            <option value="1">Болсун</option>
+            <option value="2">Тодесеев</option>
+        </select>
+        <select name="kcdng_asup" id="kcdng_asup">
+        
+            <option value="">Выберите инженера АСУП</option>
+            <option value="Ворошнин С.А.">Ворошнин</option>
+            <option value="Шматко А.В.">Шматко</option>
+        </select>
+        <select name="kip_mas" id="kip_mas">
+        
+            <option value="">Выберите мастера КИПиА</option>
+            <option value="Алексеев С.А.">Алексеев</option>
+            <option value="Цыгулев Д.В.">Цыгулев</option>
+        </select>
+        <select name="month" id="month">
+            <option value="">Выберите месяц</option>
+            <option value="01">Январь</option>
+            <option value="02">Февраль</option>
+            <option value="03">Март</option>
+            <option value="04">Апрель</option>
+            <option value="05">Май</option>
+            <option value="06">Июнь</option>
+            <option value="07">Июль</option>
+            <option value="08">Август</option>
+            <option value="09">Сентябрь</option>
+            <option value="10">Октябрь</option>
+            <option value="11">Ноябрь</option>
+            <option value="12">Декабрь</option>
+        </select>
+        <select name="year" id="year">
+            <option value="">Выберите год</option>
+            <option value="2017">2017</option>
+            <option value="2018">2018</option>
+            <option value="2019">2019</option>
+            <option value="2020">2020</option>
+            <option value="2021">2021</option>
+        </select>
+        <button class="btn btn-primary">Генерировать</button>
+    </form>
+    
+</div>
+{%endblock%}

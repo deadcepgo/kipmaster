@@ -1,0 +1,98 @@
+{%extends "templates/base.html"%}
+{% block title%}Задача{%endblock%}
+{%block content%}
+	<h2 class="text-center">Задача</h2>
+	
+	<div class="container text-left task">
+		<form action="" method="post">
+		{%csrf_token%}
+		<ul>
+			<li>Дата создания : {{task.date_pub|date:'Y-m-d'}}</li>
+			<li>Дата мероприятия : <input type="date" value="{{task.date_on|date:'Y-m-d'}}" name="date_on"></li>
+			<li>Дата изменения : {{task.date_pub|date:'Y-m-d'}}</li>
+			<li>Крайний срок : <input type="date" value="{{task.date_deadline|date:'Y-m-d'}}" name="date_dline"></li>
+			<li>Дата окончания : {{task.date_pub|date:'Y-m-d'}}</li>
+			<li>Пользователь : {{task.user}}</li>
+			<li>Статус : 
+				<select name="status">
+					<option value="">------</option>
+					<option value="act" {%if task.status == 'act'%}selected{%endif%}>В работе</option>
+					<option value="wai" {%if task.status == 'wai'%}selected{%endif%}>Ожидание</option>
+					<option value="end" {%if task.status == 'end'%}selected{%endif%}>Выполнено</option>
+				</select>
+			
+			<li>Объект : 
+				<select name="lobj" id="">
+					<option value="">------</option>
+					{%for localobject in lobjects%}
+						<option value="{{localobject.id}}" {%if task.lobj.id == localobject.id%}selected{%endif%}>{{localobject}}</option>
+					{%endfor%}
+				</select>
+				
+			</li>
+			<li>
+				<p>Задача :</p>
+				<p><textarea name="text" id="" cols="100" rows="10">{{task.text|safe}}</textarea></p>
+			</li>
+		</ul>
+		<button type="submit" class="btn btn-success">Сохранить</button>
+		</form>
+		<ul class="nav nav-tabs">
+			<li class="active"><a data-toggle="tab" href="#comments">Коментарии</a></li>
+			<li><a data-toggle="tab" href="#docs">Документы</a></li>
+		</ul>
+		<div class="tab-content">
+		<div id="docs" class="row text-left tab-pane fade">
+			<div class="col-md-4"><h4>Приложенные документы</h4></div>
+			<div class="col-md-8 text-right"><a href="#myModal1" class="btn btn-primary" data-toggle="modal">Добавить документ</a></div>
+			<div class="col-md-12 text-left">
+			<ul>
+				{%if files%}
+					{%for file in files%}
+						<li class="file">
+							<ul>
+								<li class="file-elem"><a href="{{file.document.url}}">{{file.name}}</a></li>
+								<li class="file-elem">{{file.document.size}}b</li>
+								<li class="file-elem"><h6>{{file.date_pub}}</h6></li>
+							</ul>
+						</li>
+					{%endfor%}
+				{%else%}
+					<li class="file">Файлы отсутствуют</li>
+				{%endif%}
+			</ul>
+			</div>
+		</div>
+		<div id="comments" class="row text-left tab-pane fade in active">
+			<div class="col-md-4">
+				<h4>Коментарии</h4>
+			</div>
+			<div class="col-md-8 text-right"><a href="#myModal" class="btn btn-primary" data-toggle="modal">Добавить коментарий</a></div>
+			<div class="col-md-12 text-left">
+			{%if comments%}
+				{%for comment in comments%}
+					<div class="col-md-1">{{comment.user}}</div>
+					<div class="col-md-9">
+						<p class="text-left">{{comment.text}}</p>
+						<p><h6 class="text-right">{{comment.date_pub}}</h6></p>
+					</div>
+					<div class="col-md-2">
+						<p>Приложенный файл</p>
+						{%if comment.file%}
+							<p><a href="{{comment.file.document.url}}">{{comment.file.name}}</a></p>
+							<p>{{comment.file.document.size}}b</p>
+						{%else%}
+							<p>Файл отсутствует</p>
+						{%endif%}
+					</div>
+				{%endfor%}
+			{% else %} 
+				<ul><li>Коментарии отсутствуют</li></ul>
+			{% endif %}
+			</div>
+		</div>
+		</div>
+		
+	
+	</div>
+{%endblock%}

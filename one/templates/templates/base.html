@@ -1,0 +1,58 @@
+<!DOCTYPE html>
+<html lang="ru">
+<head>
+	{% load static %}
+	<meta charset="UTF-8">
+	<meta http-equiv="X-UA-Compatible" content="IE=edge">
+    <meta name="viewport" content="width=device-width, initial-scale=1">
+	<title>{%block title%}{%endblock%}</title>
+	
+	<link rel="stylesheet" href='{% static "one/style.css" %}'\>
+	<link href='{% static "one/css/bootstrap.min.css" %}' rel="stylesheet">
+	<link rel="stylesheet" type="text/css" href='{% static "one/print.css" %}' media="print" />
+</head>
+<body>
+	{%if request.META.REMOTE_ADDR == '127.0.0.1' or request.META.REMOTE_ADDR == '192.168.0.126' or request.META.REMOTE_ADDR == '172.19.209.140' or request.META.REMOTE_ADDR == '172.19.2.62'%}
+	<div class="container head-menu noprint text-center">
+		<a href="/" class="btn btn-primary">Перечень оборудования</a>
+		
+		<a href="/locations/" class="btn btn-primary">Объекты</a>
+		<a href="/phonecats/" class="btn btn-primary">Телефоны</a>
+		<a href="/journal/" class="btn btn-primary">Журнал</a>
+		<a href="/toobjs/" class="btn btn-primary">Бланки ТО</a>
+		
+		
+		<a href="/docs/" class="btn btn-primary">Документы</a>
+
+	</div>
+	{%block content%}
+	{%endblock%}
+
+	
+	{%else%}
+		<h1 class="text-center">ТЫ кто такой? Давай до-свиданья!</h1>
+	{%endif%}
+	<script src="{% static 'one/js/jquery-3.1.1.min.js'%}"></script>
+	<script src='{% static "one/js/bootstrap.min.js" %}'></script>
+	<script type="text/javascript" src="{%static 'one/js/common.js'%}"></script>
+	<script>
+		$(document).ready(function(){
+			$('select#status').on('change',function(){
+				console.log('piupiu');
+			});
+			$('#side-menu ul').css({'display':'none'});
+			$('li.incat ul').css({'display':'block'});
+			$('#side-menu').on('click','div',function(event)
+				{
+					var ul = $(this).next('ul');
+					$(ul).slideToggle('300');
+				});		
+
+		    
+		    
+		   });
+		
+
+	</script>
+</body>
+</html>

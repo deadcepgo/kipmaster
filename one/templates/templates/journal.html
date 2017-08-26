@@ -1,0 +1,89 @@
+{%extends "templates/base.html"%}
+{% block title%}Журнал событий{%endblock%}
+{%block content%}
+	<h2 class="text-center">Журнал событий</h2>
+	
+	<div class="container text-center journal">
+		{%for note in journal%}
+		<div class="row">
+			
+			<div class="col-md-2"><p>{{note.time}}</p></div>
+			{%if note.parent == 'item'%}
+				<div class="col-md-3"><p>{%if note.created%}Добавлено оборудование: {%elif note.edited%}Изменено оборудование:{%endif%}</p></div>
+				<div class="col-md-6 text-left"><p><a href="/item/?d_id={{note.par_id}}">{{note.get_byid}}</a> &#8592;
+				
+				{%for parent in note.get_byid.lobject.first.get_parents%}
+						<a href="/lobject/?locate={{parent.id}}">{{parent.name}}</a>
+						{%if not forloop.last%}
+							&#8592;
+						{%endif%}
+					{%endfor%}
+				</p></div>
+			{%elif note.parent == 'comment'%}
+				<div class="col-md-9"><p>{{note.user}} {%if note.created%}добавил{%elif note.edited%}изменил{%endif%} комментарий к 
+				{%if note.get_byid.par == 'item'%}
+				<a href="/item/?d_id={{note.get_byid.get_parent.id}}">{{note.get_byid.get_parent}}</a>
+				{%elif note.get_byid.par == 'lobject'%}
+				<a href="/lobject/?locate={{note.get_byid.get_parent.id}}">{{note.get_byid.get_parent.name}}</a><-{%for parent in note.get_byid.get_parent.get_parents%}{{parent.name}}{%if not forloop.last%}<-{%endif%}{%endfor%}
+				{%elif note.get_byid.par == 'task'%}
+				<a href="/task/?tid={{note.get_byid.get_parent.id}}">{{note.get_byid.get_parent.text|truncatechars_html:50|safe}}</a>
+				{%endif%}
+				</p></div>
+			{%elif note.parent == 'file'%}
+				<div class="col-md-9">{{note.user}} 
+				{%if note.created%}добавил{%elif note.edited%}изменил{%endif%} документ [{{note.get_byid}}] к 
+				{% if note.get_byid.parent == 'lobj' %}
+					<a href="/lobject/?locate={{note.get_byid.get_parent.id}}">{{note.get_byid.get_parent.name}}</a>&#8592;
+					{%for parent in note.get_byid.get_parent.get_parents%}
+						<a href="/lobject/?locate={{parent.id}}">{{parent.name}}</a>
+						{%if not forloop.last%}
+							&#8592;
+						{%endif%}
+					{%endfor%}
+				{%elif note.get_byid.parent == 'item'%}
+					<a href="/lobject/?locate={{note.get_byid.get_parent.id}}">{{note.get_byid.get_parent.name}}</a> &#8592;
+					{%for parent in note.get_byid.get_parent.lobject.first.get_parents %}
+						<a href="/lobject/?locate={{parent.id}}">{{parent.name}}</a>
+						{%if not forloop.last%}
+							&#8592;
+						{%endif%}
+					{%endfor%}
+				{%else%}<a href="/lobject/?locate={{note.get_byid.get_parent.id}}">{{note.get_byid.get_parent.name}}</a>{%endif%}</div>
+			{%elif note.parent == 'tob'%}
+				<div class="col-md-9"><p>{{note.user}} {%if note.created%}добавил{%elif note.edited%}изменил{%endif%} бланк ТО <a href="/to/?par={{note.get_byid.id}}">{{note.get_byid.label}}</p></a></div>
+			{%elif note.parent == 'phone'%}
+				<div class="col-md-9"><p>{{note.user}} {%if note.created%}добавил{%elif note.edited%}изменил{%endif%} телефонную запись к <a href="/phones/?cat={{note.get_byid.cat.id}}">{{note.get_byid.cat.name}}</p></a></div>
+			{%elif note.parent == 'lobj'%}
+				<div class="col-md-9"><p>{{note.user}} {%if note.created%}добавил{%elif note.edited%}изменил{%endif%} расположение <a href="/lobject/?locate={{note.get_byid.id}}">{%for elem in note.get_byid.get_parents%}{{elem.name}}<-{%endfor%}</p></a></div>
+			{%elif note.parent == 'task'%}
+				<div class="col-md-9"><p>{{note.user}} {%if note.created%}добавил{%elif note.edited%}изменил{%endif%} задачу <a href="/task/?tid={{note.get_byid.id}}">{{note.get_byid.text|truncatechars_html:50|safe}}</a></p></div>
+			{%endif%}
+			
+			
+			
+			<div class="col-md-4"><p></p></div>
+		</div>
+		{%endfor%}
+		<div class="pagination">
+    		
+    		<span class="step-links">
+    			<a href="?page=1" class="btn btn-default"><<</a>
+    			{%if journal.number == 2%}
+					<a href="?page={{ journal.number|add:'-1' }}" class="btn btn-default">{{ journal.number|add:'-1' }}</a>
+				{%elif journal.number == 3%}
+					<a href="?page={{ journal.number|add:'-2' }}" class="btn btn-default">{{ journal.number|add:'-2' }}</a>
+    				<a href="?page={{ journal.number|add:'-1' }}" class="btn btn-default">{{ journal.number|add:'-1' }}</a>
+    			{%elif journal.number > 3%}
+    				<a href="?page={{ journal.number|add:'-3' }}" class="btn btn-default">{{ journal.number|add:'-3' }}</a>
+    				<a href="?page={{ journal.number|add:'-2' }}" class="btn btn-default">{{ journal.number|add:'-2' }}</a>
+    				<a href="?page={{ journal.number|add:'-1' }}" class="btn btn-default">{{ journal.number|add:'-1' }}</a>
+    			{%endif%}
+    			<span class="btn btn-sussecced">{{ journal.number }}</span>
+    			<a href="?page={{ journal.number|add:'1' }}" class="btn btn-default">{{ journal.number|add:'1' }}</a>
+    			<a href="?page={{ journal.number|add:'2' }}" class="btn btn-default">{{ journal.number|add:'2' }}</a>
+    			<a href="?page={{ journal.number|add:'3' }}" class="btn btn-default">{{ journal.number|add:'3' }}</a>
+    			<a href="?page={{ journal.paginator.num_pages}}" class="btn btn-default">>></a>
+    		</span>
+		</div>
+	</div>
+{%endblock%}

@@ -1,0 +1,39 @@
+@media print {
+	.noprint {
+		display:none;
+	}
+	#print {
+		display: block;
+		width: 100%;
+		font-family: Arial;
+		
+	}
+	div.col-md-2.text-right.headblock,div.col-md-3.text-right.headblock,div.col-md-4.text-right.headblockdate,.col-md-2.text-right.aftertable,.col-md-3.text-right.aftertable,.col-md-4.text-right.aftertable, .col-md-3.text-right.aftertabletwo{
+		display: inline-block;
+		text-align: left;
+	}
+	.headname {
+		margin-left: 140px;
+	}
+	.headblockdate {
+		position: absolute;
+		left: 140px;
+	}
+	.aftertabletwo {
+		position: absolute;
+		left: 50%;
+	}
+	.col-md-5.podp {
+		position: relative;
+		left: 18%;
+		bottom:20px;
+	}
+	.col-md-7.fio {
+		position: absolute;
+		left: 40%;
+	}
+	.col-md-3.text-right.aftertable.luk{
+		position: absolute;
+		left: 50%;
+	} 
+}

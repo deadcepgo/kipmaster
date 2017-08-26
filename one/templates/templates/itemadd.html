@@ -1,0 +1,114 @@
+{%extends "templates/base.html"%}
+{% block title%}Создать оборудование{%endblock%}
+{%block content%}
+	<h2 class="text-center">Создать оборудование</h2>
+	<div class="container text-center datchik">
+		<form action="" method="post">
+		{% csrf_token %}
+		<div class="row">
+			<div class="col-md-2 text-right"><p>Название</p></div>
+			<div class="col-md-4"><input type="text" name="name"><p style="font-size: 10px;">Отображается в бланке ТО как "Наименование"</p></div>
+			<div class="col-md-2 text-right"><p>Дата изготовления</p></div>
+			<div class="col-md-4"><input type="text" name="date_mk""></div>
+		</div>
+		<div class="row">
+			<div class="col-md-2 text-right"><p>Марка</p></div>
+			<div class="col-md-4"><input type="text" name="mark"><p style="font-size: 10px;">Отображается в бланке ТО как "Марка, тип"</p></div>
+			<div class="col-md-2 text-right"><p>Измеряемый параметр</p></div>
+			<div class="col-md-4"><input type="text" name="par"></div>
+		</div>
+		<div class="row">
+			<div class="col-md-2 text-right"><p>Модель</p></div>
+			<div class="col-md-4"><input type="text" name="model"><p style="font-size: 10px;">Отображается в бланке ТО как "Марка, тип"</p></div>
+			<div class="col-md-2 text-right"><p>Статус</p></div>
+			<div class="col-md-4">
+				<select name="active">
+					<option value="act">В РАБОТЕ</option>
+					<option value="not">НЕ В РАБОТЕ</option>
+					<option value="rez">РЕЗЕРВ</option>
+				</select>
+			</div>
+		</div>
+		<div class="row">
+			<div class="col-md-2 text-right"><p>Серийный номер</p><p style="font-size: 10px;">Отображается в бланке ТО как "Серийный номер"</p></div>
+			<div class="col-md-4"><input type="text" name="serial"></div>
+			<div class="col-md-2 text-right"><p>Тип датчика</p></div>
+			<div class="col-md-4"><input type="text" name="dattype"></div>
+		</div>
+		<div class="row">
+			<div class="col-md-2 text-right"><p>Дата поверки</p></div>
+			<div class="col-md-4"><input type="text" name="date_pov"><p style="font-size: 10px;">Отображается в бланке ТО как "Дата последней поверки"</p></div>
+			<div class="col-md-2 text-right"><p>Теги</p></div>
+			<div class="col-md-4">
+				<select name="tags" size="5" multiple>
+					{%for tag in tags%}
+						<option value="">{{tag.name}}</option>
+					{%endfor%}
+				</select>
+			</div>
+		</div>
+		<div class="row">
+			<div class="col-md-2 text-right"><p>Дата калибровки</p></div>
+			<div class="col-md-4"><input type="text" name="date_cal"></div>
+			<div class="col-md-2 text-right"><p>Расположение</p></div>
+			<div class="col-md-4">
+				<select name="lobject" id="">
+					<option value="">######</option>
+					
+					
+					{%for lobj in lobjs%}
+						{%if lobj_id == lobj.id%}
+							<option value="{{lobj.id}}" selected>{{lobj}}</option>
+						{%else%}
+							<option value="{{lobj.id}}">{{lobj}}</option>
+						{%endif%}
+					{%endfor%}
+					
+				</select>
+			</div>
+		</div>
+		<div class="row">
+			<div class="col-md-2 text-right"><p>TI</p></div>
+			<div class="col-md-4">
+				<select name="ti" >
+					<option value="">-----</option>
+					<option value="СИ">СИ</option>
+					<option value="СА">СА</option>
+				</select>
+			</div>
+			<div class="col-md-2 text-right"><p>Гос. реестр</p></div>
+			<div class="col-md-4"><input type="text" name="greer" value=""></div>
+		</div>
+		<div class="row">
+			<div class="col-md-2 text-right"><p>Минимальное значение</p></div>
+			<div class="col-md-4"><input type="text" name="min_z" value=""></div>
+			<div class="col-md-2 text-right"><p>Максимальное значение</p></div>
+			<div class="col-md-4"><input type="text" name="max_z" value=""></div>
+		</div>
+		<div class="row">
+			<div class="col-md-2 text-right"><p>Погрешность</p></div>
+			<div class="col-md-4"><input type="text" name="sig" value=""></div>
+			<div class="col-md-2 text-right"><p>Меж.поверочный интервал</p></div>
+			<div class="col-md-4"><input type="text" name="mpi" value=""></div>
+		</div>
+		
+		<div class="row">
+			<div class="col-md-2 text-right"><p>Срок службы</p></div>
+			<div class="col-md-4"><input type="text" name="sr_sl" value=""></div>
+			<div class="col-md-2 text-right"><p>Измеряемый параметр</p></div>
+			<div class="col-md-4"><input type="text" name="par_iz" value=""><p style="font-size: 10px;">Отображается в бланке ТО как "Контролируемый параметр, место установки"</p></div>
+		</div>
+		<div class="row">
+			<div class="col-md-2 text-right"><p>Отметка о поверке</p></div>
+			<div class="col-md-4"><input type="text" name="otm_o_pov" value=""></div>
+			
+		</div>
+		<button class="btn">Сохранить</button>
+		</form>
+		<form action="">
+			{%csrf_token%}
+			{{form.as_p}}
+			<button class="btn">Загрузить</button>
+		</form>
+	</div>
+{%endblock%}

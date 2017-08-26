@@ -1,0 +1,63 @@
+{%extends "templates/base.html"%}
+{% block title%}Задачи{%endblock%}
+{%block content%}
+	<h2 class="text-center">Задачи</h2>
+	
+	<div class="container text-center tasks">
+		<p class="text-right"><a href="/addtask/" class="btn btn-success btn-xs">Добавить задачу</a></p>
+		<p><a href="/tasks/?day=today" class="btn btn-primary btn-xs">Сегодня</a>  <a href="/tasks/?day=tomorow" class="btn btn-primary btn-xs">Завтра</a>  <a href="/tasks/?day=week" class="btn btn-primary btn-xs">Неделя</a>  <a href="/tasks/?day=month" class="btn btn-primary btn-xs">Месяц</a>  <a href="/tasks/?day=year" class="btn btn-primary btn-xs">Год</a></p>
+		
+		<form action="" class="text-center timediapazon">
+			<div class="col-md-3"></div>
+			<div class="col-md-2">
+				<p><input type="date" name="int_start"></p>
+				<p>Начало диапазона</p>
+			</div>
+			<div class="col-md-2">
+				<p><input type="date" name="int_end"></p>
+				<p>Конец диапазона</p>
+			</div>
+			<div class="col-md-2">
+				<input type="hidden" name="day" value="interval">
+				<button type="submit" class="btn btn-success">Применить</button>
+			</div>
+			<div class="col-md-3"></div>
+		</form>
+		<table class="table text-center">
+			<thead>
+				<tr>
+					<th class="text-center">Задача</th>
+					<th class="text-center">Статус</th>
+					<th class="text-center">Время создания</th>
+					<th class="text-center">Время мероприятия</th>
+					<th class="text-center">Время последнего изменения</th>
+					<th class="text-center">Объект</th>
+					<th class="text-center">Крайний срок</th>
+				</tr>
+			</thead>
+			<tbody>
+				{%for note in tasks%}
+				<tr {%if today.day > note.date_deadline.day%}style="background-color:#FFAE68;color:white;"{%elif today.day == note.date_on.day%}style="background-color:#95E873;color:black;"{%elif today.day|add:'1' == note.date_on.day%}style="background-color:#FDFF68;color:black;"{%endif%}>
+					
+					<td><a href="/task/?tid={{note.id}}">{{note.text|truncatechars_html:50|safe}}</a>{{note.date_on.day|add:'1'}}</td>
+					<td>{{note.status}}</td>
+					<td>{{note.date_pub|date:"d.m.Y H:i"}}</td>
+					<td>{{note.date_on|date:"d.m.Y"}} (<span class="weekday">{{note.date_on|date:"l"}}</span>)</td>
+					<td>{{note.date_up|date:"d.m.Y H:i"}}</td>
+					<td>
+						{% if note.lobj %}
+							<a href="/lobject/?par_id={{note.lobj.id}}">{{note.lobj.name}}</a> &#8592;
+							{%for parent in note.lobj.get_parents %} 
+								<a href="/lobject/?par_id={{parent.id}}">{{parent.name}}</a>{%if not forloop.last%} &#8592;{%endif%}
+							{%endfor%}
+							{%else%}Нет привязки{%endif%}
+					</td>
+					<td>{{note.date_deadline|date:"d.m.Y H:i"}}</td>
+				</tr>
+				{%endfor%}
+			</tbody>
+		</table>
+
+		
+	</div>
+{%endblock%}

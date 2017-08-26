@@ -1,0 +1,372 @@
+{%extends "templates/base.html"%}
+
+{% block title%}Месячный Акт ТО КЦДНГ-2{%endblock%}
+
+{%block content%}
+
+
+
+<div class="kcdng">
+	<div class="row noprint">
+	<a href="/make_pdf/" class="btn btn-primary">Создать PDF</a>
+	
+
+    </div>
+	<div class="total print" style="font-size: 10pt;">
+		<table style="width:100%;">
+			<tbody>
+				<tr>
+					<td></td>
+					<td></td>
+					<td style="text-align:right;">Приложение №8</td>
+				</tr>
+				<tr>
+					<td></td>
+					<td></td>
+					<td style="text-align:right;">к Договору №А201604690//16Y2699</td>
+				</tr>
+				<tr>
+					<td></td>
+					<td></td>
+					<td style="text-align:right;">от 20.10.2016г</td>
+				</tr>
+				<tr>
+					<td style="text-align:right;width:15%;">Заказчик</td>
+					<td style="text-align:center;">ООО "ЛУКОЙЛ-Коми" ТПП "ЛУКОЙЛ-Ухтанефтегаз" г.Ухта</td>
+					<td style="width:15%;"></td>
+				</tr>
+				<tr>
+					<td style="text-align:right;width:15%;">Подрядчик</td>
+					<td style="text-align:center;">ООО "ЛУКОЙЛ-ИНФОРМ"</td>
+					<td style="width:15%;"></td>
+				</tr>
+				<tr>
+					<td style="text-align:right;width:15%;">Исполнитель</td>
+					<td style="text-align:center;">ООО "СНЭМА-СЕРВИС"</td>
+					<td style="width:15%;"></td>
+				</tr>
+			</tbody>
+		</table>
+		<table style="width:100%;">
+			<tbody>
+				<tr>
+					<td><br></td>
+					<td><br></td>
+					<td><br></td>
+					<td><br></td>
+					<td><br></td>
+					<td><br></td>
+					<td><br></td>
+					<td><br></td>
+					<td><br></td>
+					<td><br></td>
+					<td><br></td>
+					<td><br></td>
+					<td><br></td>
+					<td><br></td>
+					<td><br></td>
+					<td><br></td>
+					<td><br></td>
+					<td><br></td>
+					
+					<td colspan="2"  style="border:1px solid black;width:15%;text-align:center;">Отчетный период</td>
+				</tr>
+				<tr>
+					<td><br></td>
+					<td><br></td>
+					<td><br></td>
+					<td><br></td>
+					<td><br></td>
+					<td><br></td>
+					<td><br></td>
+					<td><br></td>
+					<td><br></td>
+					<td><br></td>
+					<td><br></td>
+					<td><br></td>
+					<td><br></td>
+					<td><br></td>
+					<td><br></td>
+					<td><br></td>
+					<td><br></td>
+					<td><br></td>
+					<td style="border:1px solid black;text-align:center;">С 26.<span id="pre_month">{{prev_month}}</span>.<span class="new_year">{{year}}</span></td>
+					<td style="border:1px solid black;text-align:center;">По 25.<span class="new_month">{{month}}</span>.<span class="new_year">{{year}}</span></td>
+				</tr>
+				<tr>
+					<td><br></td>
+					<td><br></td>
+					<td><br></td>
+					<td><br></td>
+					<td><br></td>
+					<td><br></td>
+					<td><br></td>
+					<td><br></td>
+					<td><br></td>
+					<td><br></td>
+					<td><br></td>
+					<td><br></td>
+					<td><br></td>
+					<td><br></td>
+					<td><br></td>
+					<td><br></td>
+					<td><br></td>
+					<td><br></td>
+					
+					<td colspan="2" style="border:1px solid black;"><br></td>
+				</tr>
+				<tr>
+					<td><br></td>
+					<td><br></td>
+					<td><br></td>
+					<td><br></td>
+					<td><br></td>
+					<td><br></td>
+					<td><br></td>
+					<td><br></td>
+					<td><br></td>
+					<td><br></td>
+					<td><br></td>
+					<td><br></td>
+					<td><br></td>
+					<td><br></td>
+					<td><br></td>
+					<td><br></td>
+					<td><br></td>
+					<td style="border:1px solid black;width:15%;text-align:right;padding-right:3px;">Договор подряда, номер</td>
+					
+					<td colspan="2" style="border:1px solid black; text-align:center;">А201604690//16Y2699</td>
+				</tr>
+				<tr>
+					<td><br></td>
+					<td><br></td>
+					<td><br></td>
+					<td><br></td>
+					<td><br></td>
+					<td><br></td>
+					<td><br></td>
+					<td><br></td>
+					<td><br></td>
+					<td><br></td>
+					<td><br></td>
+					<td><br></td>
+					<td><br></td>
+					<td><br></td>
+					<td><br></td>
+					<td><br></td>
+					<td><br></td>
+					<td style="border:1px solid black;width:15%;text-align:right;padding-right:3px;">Номер документа</td>
+					
+					<td colspan="2" style="border:1px solid black; text-align:center;"><br></td>
+				</tr>
+				<tr>
+					<td><br></td>
+					<td><br></td>
+					<td><br></td>
+					<td><br></td>
+					<td><br></td>
+					<td><br></td>
+					<td><br></td>
+					<td><br></td>
+					<td><br></td>
+					<td><br></td>
+					<td><br></td>
+					<td><br></td>
+					<td><br></td>
+					<td><br></td>
+					<td><br></td>
+					<td><br></td>
+					<td><br></td>
+					<td style="border:1px solid black;width:15%;text-align:right;padding-right:3px;">Дата составления</td>
+					
+					<td colspan="2" style="border:1px solid black; text-align:center;">25.<span class="new_month">{{month}}</span>.<span class="new_year">{{year}}</span></td>
+				</tr>
+			</tbody>
+		</table>
+		
+		<div class="row text-center"><b>АКТ</b></div>
+		<div class="row text-center"><b>ВЫПОЛНЕННЫХ РАБОТ</b></div>
+		<div class="row text-center"><b>
+    				КЦДНГ №2: БКНС Мичаю, БКНС Северный Савинобор, УПСВ Северный Савинобор, МНКС Восточный Савинобор, МФНС Восточный Савинобор, Путевой подогреватель ПП-1.6 Восточный Савинобор, н/м Северный Савинобор, н/м Восточный Савинобор, н/м Мичаю, НПС Мичаю, н/м Безымянное, Метеостанция</b></div>
+		<div class="row"><br></div>
+		<table style="width:100%;">
+			<tbody>
+				<tr>
+					<td style="width:43%;">"Исполнитель" ООО "СНЭМА-СЕРВИС" в лице</td>
+					<td style="width:40%;">Начальника ЦА №4к   Игнатьева И.С.</td>
+					<td>сдал</td>
+				</tr>
+				<tr>
+					<td style="width:43%;">"Заказчик" ООО "ЛУКОЙЛ-Коми" ТПП "ЛУКОЙЛ-Ухтанефтегаз" в лице</td>
+					<td style="width:40%;"><span id="new_perkkcdngs">{{gol_dpl}}</span> КЦДНГ №2  ТПП "ЛУКОЙЛ-Ухтанефтегаз" <span id="new_kcdngs">{{gol_pl}}</span></td>
+					<td>принял</td>
+				</tr>
+				<tr>
+					<td style="width:43%;">следующие работы</td>
+					<td style="width:40%;"></td>
+					<td></td>
+				</tr>
+			</tbody>
+		</table>
+		
+		<div class="row"><br></div>
+		
+			<table  style="width: 100%;border:solid 1px black;">
+				<tbody>
+					<tr style="font-size: 12pt;font-weight: bold;border:solid 1px black;">
+    					<td colspan="" class="text-center" style="width: 45px;border:solid 1px black;">№№ п/п</td>
+    					<td colspan="" class="text-center" style="width: 400px;border:solid 1px black;">Объект автоматизации</td>
+    					<td colspan="" class="text-center" style="width: 250px;border:solid 1px black;">Оборудование на  объекте</td>
+    					<td colspan="" class="text-center" style="border:solid 1px black;">Вид работы</td>
+    					<td colspan="" class="text-center" style="width: 200px;border:solid 1px black;">Текущее состояние оборудования</td>
+    					<td colspan="" class="text-center" style="border:solid 1px black;">Примечание</td>
+    				</tr>
+    				{%for main_obj in main_objs%}
+    				<tr style="border:solid 1px black;">
+    					<td colspan="6" style="" class="text-center"><b>{{main_obj.name}}</b></td>
+    				</tr>
+    				{%for child in main_obj.child.all%}
+    				<tr style="border:solid 1px black;">
+    					<td class="text-center" colspan="" style="border:solid 1px black;">{{forloop.counter}}</td>
+    					<td class="text-center" colspan="" style="border:solid 1px black;">{{child.name}}</td>
+    					<td class="text-center" colspan="" style="border:solid 1px black;">{%if child.kip%}Оборудование КИПиА{%elif child.asu%}Оборудование АСУ ТП{%endif%}</td>
+    					<td class="text-center" colspan="" style="border:solid 1px black;">ТО-{{child.childs.all.first.get_to_num}}</td>
+    					<td class="text-center" colspan="" style="border:solid 1px black;">{%if child.status%}в работе{%else%}не в работе{%endif%}</td>
+    					<td class="text-center" colspan="" style="border:solid 1px black;">{{child.prim}}</td>
+    				</tr>
+    				{%if forloop.last%}
+						{%for elem in main_obj.get_asipaz_obj%}
+							<tr style="border:solid 1px black;">
+    							<td class="text-center" colspan="" style="border:solid 1px black;">{%if forloop.parentloop.counter == 1%}2 {%elif forloop.parentloop.counter == 2%}3{%elif forloop.parentloop.counter == 3%}4{%elif forloop.parentloop.counter == 4%}5{%elif forloop.parentloop.counter == 5%}6{%elif forloop.parentloop.counter == 6%}7{%elif forloop.parentloop.counter == 7%}8{%elif forloop.parentloop.counter == 8%}9{%elif forloop.parentloop.counter == 9%}10{%elif forloop.parentloop.counter == 10%}11{%elif forloop.parentloop.counter == 11%}12{%elif forloop.parentloop.counter == 12%}13{%elif forloop.parentloop.counter == 13%}14{%elif forloop.parentloop.counter == 14%}15{%elif forloop.parentloop.counter == 15%}16{%elif forloop.parentloop.counter == 16%}17{%elif forloop.parentloop.counter == 17%}18{%elif forloop.parentloop.counter == 18%}19{%elif forloop.parentloop.counter == 19%}20{%elif forloop.parentloop.counter == 20%}21{%elif forloop.parentloop.counter == 21%}22{%endif%}</td>
+    							<td class="text-center" colspan="" style="border:solid 1px black;">{{elem.name}}</td>
+    							<td class="text-center" colspan="" style="border:solid 1px black;">Оборудование КИПиА</td>
+    							<td class="text-center" colspan="" style="border:solid 1px black;">АСиПАЗ-{{elem.get_asipaz}}</td>
+    							<td class="text-center" colspan="" style="border:solid 1px black;">{%if elem.status%}в работе{%else%}не в работе{%endif%}</td>
+    							<td class="text-center" colspan="" style="border:solid 1px black;">{{elem.prim}}</td>
+    						</tr>
+						
+
+						{%endfor%}						
+					{%endif%}
+					{%endfor%}
+					
+					{%endfor%}
+				</tbody>
+			</table>
+		
+		<div class="row">
+		<b>Примечание: Выполнение работ подтверждается первичными актами ППР СА. Прикладываются к данному акту.</b>
+	</div>
+	
+	<table style="width:100%;">
+		<tbody>
+			<tr>
+				<td style="width:25%;"><b>Работы выполнены</b></td>
+				<td style="width:30%;text-align:center;border-bottom:1px solid black;"><b>в срок</b></td>
+				<td><b>и подлежат оплате</b></td>
+			</tr>
+			<tr>
+				<td></td>
+				<td style="width:30%;text-align:center;font-size: 8pt;">с нарушением срока</td>
+				<td></td>
+			</tr>
+		</tbody>
+	</table>
+	<table style="width:100%;">
+		<tbody>
+			<tr>
+				<td><br></td>
+			</tr>
+			<tr>
+				<td style="width:20%;text-align:left;font-size: 10pt;"><b>Заказчик:</b></td>
+				<td style="width:30%;text-align:left;"><br></td>
+				<td style="width:20%; text-align:left;font-size: 10pt;"><b>Исполнитель:</b></td>
+				<td style="width:30%;"><br></td>
+			</tr>
+			<tr>
+				<td><br></td>
+			</tr>
+			<tr>
+				<td style="width:20%;text-align:left;font-size: 10pt;"><b>Начальник ОАиМ</b></td>
+				<td style="width:30%;text-align:left;">________________________/  Балахнов Д.А.  /</td>
+				<td style="width:20%; text-align:left;font-size: 10pt;"><b>Представитель</b></td>
+				<td style="width:30%;">________________________/  Гудков Н.В.  /</td>
+			</tr>
+			<tr>
+				<td style="width:20%;text-align:left;font-size: 10pt;"><b>ТПП "ЛУКОЙЛ-Ухтанефтегаз"</b></td>
+				<td style="width:30%;text-align:left;font-size: 8pt;"><div style="display:inline-block;width:50%;text-align:center;">(подпись)</div><div style="display:inline-block;width:50%;">(Фамилия И.О.)</div></td>
+				<td style="width:20%; text-align:left;font-size: 10pt;"><b>ООО "ЛУКОЙЛ-ИНФОРМ"</b></td>
+				<td style="width:30%;font-size: 8pt;"><div style="display:inline-block;width:50%;text-align:center;">(подпись)</div><div style="display:inline-block;width:50%;">(Фамилия И.О.)</div></td>
+			</tr>
+			<tr>
+				<td style="width:20%;text-align:left;font-size: 10pt;"><br></td>
+				<td style="width:30%;text-align:left;"> "____" ________________ <span class="new_year">{{year}}</span>г.</td>
+				<td style="width:20%; text-align:left;font-size: 10pt;"><br></td>
+				<td style="width:30%;"> "____" ________________ <span class="new_year">{{year}}</span>г.</td>
+			</tr>
+			<tr>
+				<td><br></td>
+			</tr>
+			<tr>
+				<td style="width:20%;text-align:left;font-size: 10pt;"><b><span id="new_perkkcdng">{{gol_dol}}</span> КЦДНГ-2</b></td>
+				<td style="width:30%;text-align:left;">________________________/  <span id="new_kcdng">{{golova}}</span>  /</td>
+				<td style="width:20%; text-align:left;font-size: 10pt;"><b>Начальник ЦА №4к</b></td>
+				<td style="width:30%;">________________________/  Игнатьев И.С.  / </td>
+			</tr>
+			<tr>
+				<td style="width:20%;text-align:left;font-size: 10pt;"><b>ТПП "ЛУКОЙЛ-Ухтанефтегаз"</b></td>
+				<td style="width:30%;text-align:left;font-size: 8pt;"><div style="display:inline-block;width:50%;text-align:center;">(подпись)</div><div style="display:inline-block;width:50%;">(Фамилия И.О.)</div></td>
+				<td style="width:20%; text-align:left;font-size: 10pt;"><b>ООО "СНЭМА-СЕРВИС"</b></td>
+				<td style="width:30%;font-size: 8pt;"><div style="display:inline-block;width:50%;text-align:center;">(подпись)</div><div style="display:inline-block;width:50%;">(Фамилия И.О.)</div></td>
+			</tr>
+			<tr>
+				<td style="width:20%;text-align:left;font-size: 10pt;"><br></td>
+				<td style="width:30%;text-align:left;"> "____" ________________ <span class="new_year">{{year}}</span>г.</td>
+				<td style="width:20%; text-align:left;font-size: 10pt;"><br></td>
+				<td style="width:30%;"> "____" ________________ <span class="new_year">{{year}}</span>г.</td>
+			</tr>
+			<tr>
+				<td><br></td>
+			</tr>
+			<tr>
+				<td>Физические объемы проверил:</td>
+				<td></td>
+				<td></td>
+				<td></td>
+			</tr>
+			<tr>
+				<td><br></td>
+			</tr>
+			<tr>
+				<td style="width:20%;text-align:left;font-size: 10pt;"><b>Инженер  АСУП</b></td>
+				<td style="width:30%;text-align:left;"> ________________________/  <span id="new_asup">{{asup}}</span>  /</td>
+				<td style="width:20%; text-align:left;font-size: 10pt;"><b>Мастер КИПиА ЦА №4к</b></td>
+				<td style="width:30%;"> ________________________/  <span id="new_mas">{{kip_mas}}</span>   /</td>
+			</tr>
+			<tr>
+				<td style="width:20%;text-align:left;font-size: 10pt;"><b>ТПП "ЛУКОЙЛ-Ухтанефтегаз"</b></td>
+				<td style="width:30%;text-align:left;font-size: 8pt;"><div style="display:inline-block;width:50%;text-align:center;">(подпись)</div><div style="display:inline-block;width:50%;">(Фамилия И.О.)</div></td>
+				<td style="width:20%; text-align:left;font-size: 10pt;"><b>ООО "СНЭМА-СЕРВИС"</b></td>
+				<td style="width:30%;font-size: 8pt;"><div style="display:inline-block;width:50%;text-align:center;">(подпись)</div><div style="display:inline-block;width:50%;">(Фамилия И.О.)</div></td>
+			</tr>
+			<tr>
+				<td style="width:20%;text-align:left;font-size: 10pt;"><br></td>
+				<td style="width:30%;text-align:left;"> "____" ________________ <span class="new_year">{{year}}</span>г.</td>
+				<td style="width:20%; text-align:left;font-size: 10pt;"><br></td>
+				<td style="width:30%;"> "____" ________________ <span class="new_year">{{year}}</span>г.</td>
+			</tr>
+		</tbody>
+	</table>
+	
+	<div class="row"><br></div>
+	<div class="row">Настоящий акт составлен в двух экземплярах, один - Заказчику, а второй - Исполнителю</div>
+	</div>
+	
+	<div class="row"></div>
+	<div class="row"></div>
+	<div class="row"></div>
+    
+</div>
+
+
+{%endblock%}

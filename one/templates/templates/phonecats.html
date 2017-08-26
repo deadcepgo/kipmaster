@@ -1,0 +1,21 @@
+{%extends "templates/base.html"%}
+
+{% block title%}Телефонные категории{%endblock%}
+
+{%block content%}
+{% load mptt_tags %}
+<div class="container tree">
+<ul>
+    {% recursetree nodes %}
+        <li>
+            <a href="/phones/?cat={{node.id}}">{{ node.name }}</a>
+            {% if not node.is_leaf_node %}
+                <ul class="children">
+                    <a href="#">{{ children }}</a>
+                </ul>
+            {% endif %}
+        </li>
+    {% endrecursetree %}
+</ul>
+
+{%endblock%}

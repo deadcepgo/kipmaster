@@ -1,0 +1,291 @@
+{%extends "templates/base.html"%}
+
+{% block title%}{%endblock%}
+
+{%block content%}
+
+<div class="container">
+	<br>
+	<div class="row">
+	<div class="col-md-6">
+		<span>Расположение :</span>
+		<a href="/lobject/?locate={{parent.id}}">{{parent.name}}</a><-
+		{%for elem in parent.get_parents%}
+			<a href="/lobject/?locate={{elem.id}}">{{elem.name}}</a>
+			{%if not forloop.last%}
+				<-
+			{%endif%}
+		{%endfor%}
+	</div>
+	</div>
+	
+	<!-- HTML-код модального окна -->
+	<div id="myModal" class="modal fade">
+  		<div class="modal-dialog">
+    		<form action="" method="post" enctype="multipart/form-data" class="text-left form-horizontal">
+    		<div class="modal-content">
+      			<!-- Заголовок модального окна -->
+      			<div class="modal-header">
+        			<button type="button" class="close" data-dismiss="modal" aria-hidden="true">×</button>
+        			<h4 class="modal-title">Добавить коментарий</h4>
+      			</div>
+      			<!-- Основное содержимое модального окна -->
+      			<div class="modal-body">
+        			
+						{%csrf_token%}
+						<div class="row">
+							<div class="form-group">
+			    				<label for="inputname" class="col-sm-2 control-label">Пользователь:</label>
+			    				<div class="col-sm-10">
+			      					<input type="text" class="form-control" id="inputname" name="user" placeholder="Имя пользователя">
+			    				</div>
+							</div>
+							<div class="form-group">
+			    				<label for="inputcomment" class="col-sm-2 control-label">Коментарий</label>
+			    				<div class="col-sm-10">
+				    				<textarea name="text" id="inputcomment" cols="75" rows="5" class="form-control" placeholder="Коментарий"></textarea>
+			    				</div>
+							</div>
+						</div>
+					
+      			</div>
+      			<!-- Футер модального окна -->
+      			<div class="modal-footer">
+        			<button type="button" class="btn btn-default" data-dismiss="modal">Закрыть</button>
+        			<button type="submit" class="btn btn-primary">Отправить</button>
+      			</div>
+    		</div>
+    		</form>
+  		</div>
+	</div>
+	<div id="myModal1" class="modal fade">
+  		<form action="/uploadfile/" method="post" id="fileup" enctype="multipart/form-data" class="text-left">
+  		<div class="modal-dialog">
+    		<div class="modal-content">
+      			<!-- Заголовок модального окна -->
+      			<div class="modal-header">
+        			<button type="button" class="close" data-dismiss="modal" aria-hidden="true">×</button>
+        			<h4 class="modal-title">Добавить документ</h4>
+      			</div>
+      			<!-- Основное содержимое модального окна -->
+      			<div class="modal-body" style="padding:15px;">
+        			
+						{%csrf_token%}
+						
+							<div class="form-group">
+			    				<label for="inputfilename" class="col-sm-3 control-label">Имя файла</label>
+			    				<div class="col-sm-9">
+			      					<input type="text" class="form-control" id="inputfilename" name="name" placeholder="Введите имя файла">
+			    				</div>
+							</div>
+							<div class="form-group">
+			    				<label for="document" class="col-sm-3 control-label">Файл</label>
+			    				<div class="col-sm-9">
+				    				<input type="file" name="document" id="document">
+			    				</div>
+			    				<input type="hidden" name="parent" value="lobj">
+			    				<input type="hidden" name="parent_id" value="{{parent.id}}">
+							</div>
+						<input type="text" name="parents" class="hidden" value="{{d.id}}">
+					
+      			</div>
+      			<!-- Футер модального окна -->
+      			<div class="modal-footer">
+        			<button type="button" class="btn btn-default" data-dismiss="modal">Закрыть</button>
+        			<button type="submit" class="btn btn-primary">Загрузить</button>
+      			</div>
+    		</div>
+  		</div>
+  		</form>
+	</div>
+
+	
+	<ul class="nav nav-tabs">
+		<li><a data-toggle="tab" href="#comments">Коментарии</a></li>
+		<li><a data-toggle="tab" href="#files">Документы</a></li>
+		<li class="active"><a data-toggle="tab" href="#obor">Оборудование объекта</a></li>
+		<li><a data-toggle="tab" href="#oborsub">Оборудование подобъектов</a></li>
+	</ul>
+	<div class="tab-content">
+	<div id="obor" class="tab-pane fade in active">
+		<div class="col-md-4"><h4>Оборудование объекта</h4></div>
+		<div class="col-md-8 text-right"><a href="/item/add/?lobj={{parent.id}}" class="btn btn-success btn-xs">Добавить оборудование к объекту</a></div>
+		<table style="width: 100%;" class="table table-bordered table-hover">
+			<thead>
+				<tr>
+					<th>ID</th>
+					<th>Название</th>
+					<th>Серийный номер</th>
+					<th>Дата поверки</th>
+					<th>Состояние</th>
+					<th>Расположение</th>
+					<th>Теги</th>
+					
+				</tr>
+			</thead>
+			<tbody>
+				{%for datch in parent.items.all%}
+					<tr>
+						<td><p>{{datch.id}}</p></td>
+						<td><p><a href="/item/?d_id={{datch.id}}">{{datch.name}}</a></p></td>
+						<td><p>{{datch.serial}}</p></td>
+						<td><p>{{datch.date_pov}}</p></td>
+						<td><p style="background-color:{%if datch.active %} #B2E8B2;{%else %}#E08989{%endif%}">{%if datch.active%}В РАБОТЕ{%else%} НЕ В РАБОТЕ {%endif%}</p></td>
+						<td>
+							<p>	
+								<a href="?locate={{datch.lobject.first.id}}">{{datch.lobject.first.name}}</a>
+								{%for cat in datch.lobject.first.get_ancestors.reverse%}&#8592;
+									
+									<a href="?locate={{cat.id}}">{{cat.name}}</a>
+									
+								{%endfor%}
+							</p>
+							
+						</td>
+						<td><p>{% for tag in datch.tags.all %} <a href="?tag={{tag.id}}">{{tag.name}}</a>,  {% endfor %}</p></td>
+						
+					</tr>
+				{%endfor%}
+			</tbody>
+		</table>
+	</div>
+	<div id="oborsub" class="tab-pane fade">
+		<h4>Оборудование подобъектов</h4>
+		
+		<table style="width: 100%;" class="table table-bordered table-hover">
+			<thead>
+				<tr>
+					<th>ID</th>
+					<th>Название</th>
+					<th>Серийный номер</th>
+					<th>Дата поверки</th>
+					<th>Состояние</th>
+					<th>Расположение</th>
+					<th>Теги</th>
+					
+				</tr>
+			</thead>
+			<tbody>
+
+				
+				{%for datch in subitems%}
+					<tr>
+						<td><p>{{datch.id}}</p></td>
+						<td><p><a href="/item/?d_id={{datch.id}}">{{datch.name}}</a></p></td>
+						<td><p>{{datch.serial}}</p></td>
+						<td><p>{{datch.date_pov}}</p></td>
+						<td><p style="background-color:{%if datch.active %} #B2E8B2;{%else %}#E08989{%endif%}">{%if datch.active%}В РАБОТЕ{%else%} НЕ В РАБОТЕ {%endif%}</p></td>
+						<td>
+							<p>	
+								<a href="?locate={{datch.lobject.first.id}}">{{datch.lobject.first.name}}</a>
+								{%for cat in datch.lobject.first.get_ancestors.reverse%}&#8592;
+									
+									<a href="?locate={{cat.id}}">{{cat.name}}</a>
+									
+								{%endfor%}
+							</p>
+							
+						</td>
+						<td><p>{% for tag in datch.tags.all %} <a href="?tag={{tag.id}}">{{tag.name}}</a>,  {% endfor %}</p></td>
+						
+					</tr>
+				{%endfor%}
+			</tbody>
+		</table>
+		{% if subitems.paginator.num_pages > 1 %}
+    		<span class="step-links">
+    			<a href="?locate={{parent_id}}&page=1&q={{request.GET.q}}" class="btn btn-default"><<</a>
+    			{%if subitems.number == 2%}
+					<a href="?locate={{parent_id}}&page={{ subitems.number|add:'-1' }}" class="btn btn-default">{{ subitems.number|add:'-1' }}</a>
+				{%elif subitems.number == 3%}
+					<a href="?locate={{parent_id}}&page={{ subitems.number|add:'-2' }}" class="btn btn-default">{{ subitems.number|add:'-2' }}</a>
+    				<a href="?locate={{parent_id}}&page={{ subitems.number|add:'-1' }}" class="btn btn-default">{{ subitems.number|add:'-1' }}</a>
+    			{%elif subitems.number > 3%}
+    				<a href="?locate={{parent_id}}&page={{ subitems.number|add:'-3' }}" class="btn btn-default">{{ subitems.number|add:'-3' }}</a>
+    				<a href="?locate={{parent_id}}&page={{ subitems.number|add:'-2' }}" class="btn btn-default">{{ subitems.number|add:'-2' }}</a>
+    				<a href="?locate={{parent_id}}&page={{ subitems.number|add:'-1' }}" class="btn btn-default">{{ subitems.number|add:'-1' }}</a>
+    			{%endif%}
+    			<span class="btn btn-sussecced">{{ subitems.number }}</span>
+    			
+    			{%if subitems.number == subitems.paginator.num_pages|add:'-1'%}
+    				<a href="?locate={{parent_id}}&page={{ subitems.number|add:'1' }}" class="btn btn-default">{{ subitems.number|add:'1' }}</a>
+    				<a href="?locate={{parent_id}}&page={{ subitems.paginator.num_pages}}" class="btn btn-default">>></a>
+    			{%elif subitems.number == subitems.paginator.num_pages|add:'-2'%}
+					<a href="?locate={{parent_id}}&page={{ subitems.number|add:'1' }}" class="btn btn-default">{{ subitems.number|add:'1' }}</a>
+    				<a href="?locate={{parent_id}}&page={{ subitems.number|add:'2' }}" class="btn btn-default">{{ subitems.number|add:'2' }}</a>
+    				<a href="?locate={{parent_id}}&page={{ subitems.paginator.num_pages}}" class="btn btn-default">>></a>
+    			{%elif subitems.number == subitems.paginator.num_pages|add:'-3'%}
+    				<a href="?locate={{parent_id}}&page={{ subitems.number|add:'1' }}" class="btn btn-default">{{ subitems.number|add:'1' }}</a>
+    				<a href="?locate={{parent_id}}&page={{ subitems.number|add:'2' }}" class="btn btn-default">{{ subitems.number|add:'2' }}</a>
+    				<a href="?locate={{parent_id}}&page={{ subitems.number|add:'3' }}" class="btn btn-default">{{ subitems.number|add:'3' }}</a>
+    				<a href="?locate={{parent_id}}&page={{ subitems.paginator.num_pages}}" class="btn btn-default">>></a>
+    			{%elif not subitems.number == subitems.paginator.num_pages%}
+    				<a href="?locate={{parent_id}}&page={{ subitems.number|add:'1' }}" class="btn btn-default">{{ subitems.number|add:'1' }}</a>
+    				<a href="?locate={{parent_id}}&page={{ subitems.number|add:'2' }}" class="btn btn-default">{{ subitems.number|add:'2' }}</a>
+    				<a href="?locate={{parent_id}}&page={{ subitems.number|add:'3' }}" class="btn btn-default">{{ subitems.number|add:'3' }}</a>
+					<a href="?locate={{parent_id}}&page={{ subitems.paginator.num_pages}}" class="btn btn-default">>></a>
+    			{%endif%}
+    		</span>
+    		{%endif%}
+	</div>
+	<div id="files" class="tab-pane fade">
+		
+		<div class="col-md-9">
+		<h4>Приложенные документы</h4>
+		<ul>
+		
+			{%if files%}
+			{%for file in files%}
+			<li class="file">
+			<ul>
+				<li class="file-elem"><a href="{{file.document.url}}">{{file.document.name}}</a></li>
+				<li class="file-elem">{{file.document.size|filesizeformat}}</li>
+				<li class="file-elem"><h6>{{file.date_pub}}</h6></li>
+			</ul></li>
+			{%endfor%}
+			{%else%}
+			<li class="file">Файлы отсутствуют</li>
+			{%endif%}
+		
+		</ul>
+		</div>
+		<div class="col-md-3 text-right"><a href="#myModal1" class="btn btn-primary" data-toggle="modal">Добавить документ</a></div>
+	</div>
+	<br>
+	<div id="comments" class="tab-pane fade">
+	<div class="col-md-9">
+	{%if comments%}
+		{%for comment in comments%}
+		<div class="row comment">
+			<div class="col-md-1">{{comment.user}}</div>
+			<div class="col-md-9">
+				<p class="text-left">{{comment.text}}</p>
+				<p><h6 class="text-right">{{comment.date_pub}}</h6></p>
+			</div>
+			<div class="col-md-2">
+				
+				{%if comment.file%}
+				<p>Приложенный файл</p>
+				<p><a href="{{comment.file.document.url}}">{{comment.file.name}}</a></p>
+				<p>{{comment.file.document.size}}b</p>
+				
+				{%endif%}
+			</div>
+		</div>
+		{%endfor%}
+	
+	{%else%}
+	<li>Коментарии отсутствуют</li>
+	{%endif%}
+	</div>
+	<div class="col-md-3 text-right">
+		<a href="#myModal" class="btn btn-primary" data-toggle="modal">Добавить коментарий</a>
+	</div>
+	</div>
+	</div>
+</div>
+
+
+
+
+{%endblock%}

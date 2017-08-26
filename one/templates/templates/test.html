@@ -1,0 +1,143 @@
+{%extends "templates/base.html"%}
+{% block title%}Акт ТО{%endblock%}
+{%block content%}
+
+<form action="" class="noprint">
+	<select name="mounth" id="">
+		<option value="1">Январь</option>
+		<option value="2">Февраль</option>
+		<option value="3">Март</option>
+		<option value="4">Апрель</option>
+		<option value="5">Май</option>
+		<option value="6">Июнь</option>
+		<option value="7">Июль</option>
+		<option value="8">Август</option>
+		<option value="9">Сентябрь</option>
+		<option value="10">Октябрь</option>
+		<option value="11">Ноябрь</option>
+		<option value="12">Декабрь</option>
+	</select>
+	<input type="hidden" name="par" value="{{tob.id}}">
+	<button class="btn">Генерировать</button>
+	    {{request.META.HTTP_HOST}}{{request.META.PATH_INFO}}{{request.META.QUERY_STRING}}
+	<a href="/make_pdf?tobid={{tob.id}}" class="btn btn-primary">Создать PDF</a>
+</form>
+<div class="container" id="print">
+	<div class="row text-center" style="font-size:12pt;"><b>Акт</b></div>
+	<div class="row text-center" style="font-size:12pt;"><b>проведения планово-предупредительных работ средств автоматизации КЦДНГ-2 ТПП "ЛУКОЙЛ-Ухтанефтегаз"</b></div>
+	<div class="row"><br></div>
+	<div class="row">
+		<div class="col-md-2 text-right headblock" style="font-size: 10pt;"><b>Объект:</b></div>
+		<div class="col-md-3 text-right headblock"><b class="headname">{{tob.name}}</b></div>
+		
+	</div>
+	<div class="row">
+		<div class="col-md-2 text-right headblock" style="font-size: 10pt;"><b>Код объекта:</b></div>
+		<div class="col-md-3 text-right headblock"></div>
+		
+		
+	</div>
+	<div class="row">
+		<div class="col-md-2 text-right headblock" style="font-size: 10pt;"><b>Дата проведения:</b></div>
+		<div class="col-md-4 text-right headblockdate" style="font-size: 10pt;">с&nbsp;&nbsp;  "_____"_____________________2017г</div>
+		
+		
+	</div>
+	<div class="row">
+		<div class="col-md-2 text-right headblock"></div>
+		<div class="col-md-4 text-right headblockdate" style="font-size: 10pt;">по "_____"_____________________2017г</div>
+		
+		
+	</div>
+	<div class="row"><br></div>
+	
+	<table style="margin-top: 30px;font-size: 8pt;">
+		<thead>
+			<tr style="border:solid 1px black">
+				<th class="text-center col1"  style="border:solid 1px black;padding-left:2px;padding-right:2px;"><b>№ п/п</b></th>
+				<th class="text-center col2" style="border:solid 1px black;padding-left:2px;padding-right:2px;font-weight: bold;">Наименование</th>
+				<th class="text-center col3" style="border:solid 1px black;padding-left:2px;padding-right:2px;font-weight: bold;">Контролируемый параметр, место установки</th>
+				<th class="text-center col4" style="border:solid 1px black;padding-left:2px;padding-right:2px;font-weight: bold;">Позиция</th>
+				<th class="text-center col5" style="border:solid 1px black;padding-left:2px;padding-right:2px;font-weight: bold;">Марка, тип</th>
+				<th class="text-center col6" style="border:solid 1px black;padding-left:2px;padding-right:2px;font-weight: bold;">Серийный номер</th>
+				<th class="text-center col7" style="border:solid 1px black;padding-left:2px;padding-right:2px;font-weight: bold;">Дата последней поверки</th>
+				<th class="text-center col8" style="border:solid 1px black;padding-left:2px;padding-right:2px;font-weight: bold;">Вид ТО</th>
+				<th class="text-center col9" style="border:solid 1px black;padding-left:2px;padding-right:2px;font-weight: bold;">Состояние оборудования</th>
+				<th class="text-center col10" style="border:solid 1px black;padding-left:2px;padding-right:2px;font-weight: bold;">Примечание</th>
+			</tr>
+		</thead>
+		<tbody>
+			{%for pod in tob.childs.all%}
+			
+				<tr style="border:solid 1px black">
+					<td colspan="10" class="text-center" style="border:solid 1px black"><b>{{pod.name}}</b></td>
+				</tr>
+				{%for item in pod.items.all%}
+					<tr style="font-size: 8pt;" style="border:solid 1px black">
+						<td class="col-md-1 text-center" style="border:solid 1px black">{{forloop.counter}}</td>
+						<td class="col-md-3 text-center" style="border:solid 1px black">{{item.name}}</td>
+						<td class="col-md-2 text-center" style="border:solid 1px black">{%if not item.par_iz == '######'%}{{item.par_iz}}{%endif%}</td>
+						<td class="col-md-1 text-center" style="border:solid 1px black"></td>
+						<td class="col-md-2 text-center" style="border:solid 1px black">{%if not item.mark == '--' %}{{item.mark}}-{{item.model}}{%else%}{%if not item.model == '######'%}{{item.model}}{%endif%}{%endif%}</td>
+						<td class="col-md-2 text-center" style="border:solid 1px black">{%if not item.serial == '######'%}{{item.serial}}{%endif%}</td>
+						<td class="col-md-2 text-center" style="border:solid 1px black">{%if not item.date_pov == '######'%}{{item.date_pov}}{%endif%}</td>
+						<td class="col-md-1 text-center" style="border:solid 1px black">ТО-{{pod.get_to_num}}</td>
+						<td class="col-md-2 text-center" style="border:solid 1px black"></td>
+						<td class="col-md-2 text-center" style="border:solid 1px black"></td>
+					</tr>
+				{%endfor%}
+			{%endfor%}
+		</tbody>
+	</table>
+	<table style="width:100%;font-size: 10pt;">
+		<tbody>
+			<tr><br></tr>
+			<tr>
+				<td style="width:15%;text-align:right;font-size: 10pt;"><b>Работы выполнил:</b></td>
+				<td style="width:30%;"><br></td>
+				<td style="width:20%; text-align:right;font-size: 10pt;"><b>Выполнение работ подтверждаю:</b></td>
+				<td style="width:30%;"><br></td>
+			</tr>
+			<tr>
+				<td style="width:15%;text-align:right;font-size: 10pt;"><b>Слесарь по КИПиА</b></td>
+				<td style="width:30%;text-align:center;">_______________ / ________________________ /</td>
+				<td style="width:20%; text-align:right;font-size: 10pt;"><b>Представитель</b></td>
+				<td style="width:30%;text-align:center;">_______________ / ________________________ /</td>
+			</tr>
+			<tr style="height:10pt;">
+				<td style="width:15%;text-align:right;font-size: 10pt;"><b>ООО "Снэма-Сервис"</b></td>
+				<td style="width:30%;font-size:7pt;"><div style="width:50%;text-align:center;display:inline-block;">(подпись)</div><div style="width:35%;text-align:center;display:inline-block;">(Фамилия И.О.)</div></td>
+				<td style="width:20%; text-align:right;font-size: 10pt;"><b>ТПП "ЛУКОЙЛ-Ухтанефтегаз"</b></td>
+				<td style="width:30%;font-size:7pt;"><div style="width:50%;text-align:center;display:inline-block;">(подпись)</div><div style="width:35%;text-align:center;display:inline-block;">(Фамилия И.О.)</div></td>
+			</tr>
+			<tr>
+				<td style="width:15%;text-align:right;font-size: 10pt;"></td>
+				<td style="width:30%;text-align:left;padding-left:5%;">"____" ________________ 2017 г.</td>
+				<td style="width:20%; text-align:right;font-size: 10pt;"></td>
+				<td style="width:30%;text-align:left;padding-left:5%;">"____" ________________ 2017 г.</td>
+			</tr>
+			<tr><td><br></td><td><br></td><td><br></td><td><br></td></tr>
+			<tr>
+				<td style="width:15%;text-align:right;font-size: 10pt;"><b>Мастер КИПиА</b></td>
+				<td style="width:30%;text-align:center;">_______________ / ________________________ /</td>
+				<td style="width:20%; text-align:right;font-size: 10pt;"></td>
+				<td style="width:30%;text-align:center;"></td>
+			</tr>
+			<tr style="height:10pt;">
+				<td style="width:15%;text-align:right;font-size: 10pt;"><b>ООО "Снэма-Сервис"</b></td>
+				<td style="width:30%;font-size:7pt;"><div style="width:50%;text-align:center;display:inline-block;">(подпись)</div><div style="width:35%;text-align:center;display:inline-block;">(Фамилия И.О.)</div></td>
+				<td style="width:20%; text-align:right;font-size: 10pt;"></td>
+				<td style="width:30%;font-size:7pt;"></td>
+			</tr>
+			<tr>
+				<td style="width:15%;text-align:right;font-size: 10pt;"></td>
+				<td style="width:30%;text-align:left;padding-left:5%;">"____" ________________ 2017 г.</td>
+				<td style="width:20%; text-align:right;font-size: 10pt;"></td>
+				<td style="width:30%;text-align:center;"></td>
+			</tr>
+		</tbody>
+	</table>
+	
+</div>
+
+{%endblock%}

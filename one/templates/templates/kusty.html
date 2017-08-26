@@ -1,0 +1,96 @@
+<!DOCTYPE html>
+<html lang="ru">
+<head>
+	<meta charset="UTF-8">
+	<meta http-equiv="X-UA-Compatible" content="IE=edge">
+    <meta name="viewport" content="width=device-width, initial-scale=1">
+	<title>Кусты</title>
+	{% load static %}
+	<link href='{% static "one/css/bootstrap.min.css" %}' rel="stylesheet">
+</head>
+<body>
+	
+	{%if request.META.REMOTE_ADDR == '127.0.0.1' or request.META.REMOTE_ADDR == '192.168.0.126' or request.META.REMOTE_ADDR == '172.19.2.51'%}
+	
+	<div class="container text-center">
+		<div class="col-md-3">
+			<table class="table">
+				<tr>
+					<th colspan="2" class="text-center">Мичаю</th>
+				</tr>
+				{%for plc in plcs_m%}
+					
+					<tr class="plc_link">
+						<td class="text-left name">{{plc.name}} <div class="plc_id hidden">{{plc.id}}</div></td>
+						<td class="text-center status" style="background-color: {%if plc.get_ninj.status == 'Норм'%}lime{%else%}yellow{%endif%};">{{plc.get_ninj.status}}</td>
+					</tr>
+				{%endfor%}
+			</table>
+		</div>
+		<div class="col-md-3">
+			<table class="table">
+				<tr>
+					<th colspan="2" class="text-center">Восточный Савинобор</th>
+				</tr>
+				{%for plc in plcs_v%}
+					
+					<tr class="plc_link">
+						<td class="text-left name">{{plc.name}} <div class="plc_id hidden">{{plc.id}}</div></td>
+						<td class="text-center status" style="background-color: {%if plc.get_ninj.status == 'Норм'%}lime{%else%}yellow{%endif%};">{{plc.get_ninj.status}}</td>
+					</tr>
+				{%endfor%}
+			</table>
+		</div>
+		<div class="col-md-3">
+			<table class="table">
+				<tr>
+					<th colspan="2" class="text-center">Северный Савинобор</th>
+				</tr>
+				{%for plc in plcs_s%}
+					
+					<tr class="plc_link">
+						<td class="text-left name">{{plc.name}} <div class="plc_id hidden">{{plc.id}}</div></td>
+						<td class="text-center status" style="background-color: {%if plc.get_ninj.status == 'Норм'%}lime{%else%}yellow{%endif%};">{{plc.get_ninj.status}}</td>
+					</tr>
+				{%endfor%}
+			</table>
+		</div>
+		<div class="col-md-3">
+			<table class="table">
+				<tr>
+					<th colspan="2" class="text-center">Безымянное</th>
+				</tr>
+				{%for plc in plcs_b%}
+					
+					<tr class="plc_link">
+						<td class="text-left name">{{plc.name}} <div class="plc_id hidden">{{plc.id}}</div></td>
+						<td class="text-center status" style="background-color: {%if plc.get_ninj.status == 'Норм'%}lime{%else%}yellow{%endif%};">{{plc.get_ninj.status}}</td>
+					</tr>
+				{%endfor%}
+			</table>
+		</div>
+
+		
+
+	</div>
+	
+	{%else%}
+		<h1 class="text-center">ТЫ кто такой? Давай до-свиданья!</h1>
+	{%endif%}
+	
+	<script src="{% static 'one/js/jquery-3.1.1.min.js'%}"></script>
+	<script src='{% static "one/js/bootstrap.min.js" %}'></script>
+	<script>
+		$(document).ready(function(){
+			$('td.name').on('click',function(e){
+				if($(this).parent().find('form.change_status').length < 1){
+					$(this).parent().find('td.status').append("<form action='' method='POST' class='change_status'>{%csrf_token%}<select name=status id=><option value=True>Норм</option><option value=False>Не включать!</option></select><input type=hidden name=plc_id value="+$(this).find('div.plc_id').text()+"><button type=submit>OK</button></form>");
+				}else{
+					$(this).parent().find('form.change_status').remove();
+				};
+			});
+		});
+		
+	</script>
+</body>
+</html>

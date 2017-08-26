@@ -1,0 +1,38 @@
+h2 {
+	color: green;
+}
+.parametr{
+	background-color: #E8E8E8;
+	
+}
+.datchik {
+    margin-bottom: 2px;
+    font-weight: bold;
+}
+
+.param-dat {
+	background-color: yellow;
+}
+.tree {
+	margin-top: 30px;
+}
+.elem-menu {
+	background-color: yellow;
+	width: 100px;
+}
+
+li.file-elem {
+	display: inline-block;
+}
+
+
+.mounths {
+	display: inline-block;
+}
+.kcdng {
+	width: 1300px!important;
+	margin: auto;
+}
+.kcdng>table {
+	width: 100%;
+}

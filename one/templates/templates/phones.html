@@ -1,0 +1,28 @@
+{%extends "templates/base.html"%}
+
+{% block title%}Телефоны{%endblock%}
+
+{%block content%}
+<div class="container">
+    {%for phone in phones%}
+        <div class="row">
+            <div class="col-md-3">
+                
+                <p>{{phone.name}}</p>
+
+            </div>
+            
+            <div class="col-md-3">
+                {%if phone.is_ration%}
+                    <p>55-48-(буль-буль)-{{phone.num}}</p>
+                {%else%}
+                    <p>{{phone.num}}</p>
+                {%endif%}
+            </div>
+            <div class="col-md-3">
+                <p>{{phone.cat.name}}</p>
+            </div>
+        </div>
+    {%endfor%}
+</div>
+{%endblock%}

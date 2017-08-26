@@ -1,0 +1,53 @@
+{%extends "templates/base.html"%}
+{% block title%}Добавить задачу{%endblock%}
+{%block content%}
+	<h2 class="text-center">Добавить задачу</h2>
+	
+	<div class="container text-left task">
+		<form action="" method="POST" class="form-horizontal">
+			{%csrf_token%}
+			<div class="form-group">
+				<label for="" class="control-label col-md-3">Дата мероприятия :</label>
+				<div class="col-md-3">
+					<input type="date" name="date_on" class="form-control">
+				</div>
+			</div>
+			<div class="form-group">
+				<label for="" class="control-label col-md-3">Крайний срок :</label>
+				<div class="col-md-3">
+					<input type="date" name="date_deadline" class="form-control">
+				</div>
+			</div>
+			<div class="form-group">
+				<label for="" class="control-label col-md-3">Пользователь :</label>
+				<div class="col-md-3">
+					<input type="text" name="user" class="form-control">
+				</div>
+			</div>
+			<div class="form-group">
+				<label for="" class="control-label col-md-3">Задача :</label>
+				<div class="col-md-5">
+					<select name="lobj" id="">
+						<option value="">------</option>
+						{%for localobject in lobjects%}
+							<option value="{{localobject.id}}" {%if task.lobj.id == localobject.id%}selected{%endif%}>{{localobject}}</option>
+						{%endfor%}
+					</select>
+				</div>
+			</div>
+			
+			<div class="form-group">
+				<label for="" class="control-label col-md-3">Задача :</label>
+				<div class="col-md-5">
+					<textarea name="text" id="" cols="50" rows="10"></textarea>
+				</div>
+			</div>
+			<div class="col-md-7 text-right">
+				<button class="btn btn-primary" type="submit">Добавить</button>	
+			</div>
+			
+		</form>
+
+	
+	</div>
+{%endblock%}

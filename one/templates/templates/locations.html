@@ -1,0 +1,24 @@
+{%extends "templates/base.html"%}
+
+{% block title%}Объекты{%endblock%}
+
+{%block content%}
+{% load mptt_tags %}
+
+
+
+<div class="container tree">
+<ul id="side-menu" type="disc" style="font-size: 200%;">
+    {% recursetree nodes %}
+        <li>
+            <div><a href="/lobject/?locate={{node.id}}">{{ node.name }}</a></div>
+            {% if not node.is_leaf_node %}
+                <ul class="children" type="disc">
+                    <a href="#">{{ children }}</a>
+                </ul>
+            {% endif %}
+        </li>
+    {% endrecursetree %}
+</ul>
+</div>
+{%endblock%}

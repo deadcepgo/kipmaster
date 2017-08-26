@@ -1,0 +1,52 @@
+{%extends "templates/base.html"%}
+{% block title%}Документы{%endblock%}
+{%block content%}
+	<h2 class="text-center">Документы</h2>
+	
+	<div class="container text-center">
+		<table class="table">
+			<thead>
+				<tr>
+					<th class="text-center">Дата</th>
+					<th class="text-center">Имя</th>
+					<th class="text-center">Файл</th>
+					<th class="text-center">Родитель</th>
+				</tr>
+			</thead>
+			<tbody>
+				{%for doc in documents%}
+					<tr>
+						<td>{{doc.date_pub}}</td>
+						<td>{{doc.name}}</td>
+						<td><a href="{{doc.document.url}}">{{doc.document}}</a></td>
+						<td>
+							{%if doc.parent == 'lobj'%}
+								<a href="/lobject/?locate={{doc.get_parent.id}}">{{doc.get_parent.name}}</a> &#8592; 
+								{%for parent in doc.get_parent.get_parents%}
+									<a href="/lobject/?locate={{parent.id}}">{{parent.name}}</a>
+									{%if not forloop.last%}	&#8592; {%endif%}
+								{%endfor%}
+							{%elif doc.parent == 'item'%}
+								<a href="/item/?d_id={{doc.get_parent.id}}">{{doc.get_parent.name}}</a> &#8592; 
+								{%for parent in doc.get_parent.lobject.first.get_parents%}
+									<a href="/lobject/?locate={{parent.id}}">{{parent.name}}</a>
+									{%if not forloop.last%}	&#8592; {%endif%}
+								{%endfor%}
+							{%elif doc.parent == 'task'%}
+								<a href="/task/?tid={{doc.get_parent.id}}">{{doc.get_parent.text|safe|truncatewords_html:20}}</a> &#8592; 
+								{%for parent in doc.get_parent.lobj.get_parents%}
+									<a href="/lobject/?locate={{parent.id}}">{{parent.name}}</a>
+									{%if not forloop.last%}	&#8592; {%endif%}
+								{%endfor%}
+							{%endif%}
+							
+						</td>
+					</tr>
+				{%endfor%}
+			</tbody>
+		</table>
+		
+			
+		
+	</div>
+{%endblock%}

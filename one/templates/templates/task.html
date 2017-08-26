@@ -1,0 +1,162 @@
+{%extends "templates/base.html"%}
+{% block title%}Задача{%endblock%}
+{%block content%}
+	<h2 class="text-center">Задача</h2>
+	<p class="text-center"><a href="/task/?tid={{task.id}}&change=True">Изменить</a></p>
+	<div class="container text-left task">
+		
+		<ul>
+			<li>Дата создания : {{task.date_pub|date:"d.m.Y H:i"}}</li>
+			<li>Дата мероприятия : {{task.date_on|date:"d.m.Y"}}</li>
+			<li>Дата изменения : {{task.date_up|date:"d.m.Y H:i"}}</li>
+			<li>Крайний срок : {{task.date_deadline|date:"d.m.Y H:i"}}</li>
+			<li>Дата окончания : {{task.date_end|date:"d.m.Y H:i"}}</li>
+			<li>Пользователь : {{task.user}}</li>
+			<li>Статус : {%if task.status == 'act'%}В работе{%elif task.status == 'wai'%}Ожидание{%elif task.status == 'end'%}Выполнено{%endif%}</li>
+			<li>Объект : {% if task.lobj %}
+				<a href="/lobject/?par_id={{task.lobj.id}}">{{task.lobj.name}}</a><-
+				{%for parent in task.lobj.get_parents %} 
+					<a href="/lobject/?par_id={{parent.id}}">{{parent.name}}</a>{%if not forloop.last%}<-{%endif%}
+				{%endfor%}
+				{%else%}Нет привязки{%endif%}
+			</li>
+			<li>
+				<p>Задача :</p>
+				<p>{{task.text|safe}}</p>
+			</li>
+		</ul>
+		<ul class="nav nav-tabs">
+			<li class="active"><a data-toggle="tab" href="#comments">Коментарии</a></li>
+			<li><a data-toggle="tab" href="#docs">Документы</a></li>
+		</ul>
+		<div class="tab-content">
+		<div id="docs" class="row text-left tab-pane fade">
+			<div class="col-md-4"><h4>Приложенные документы</h4></div>
+			<div class="col-md-8 text-right"><a href="#myModal1" class="btn btn-primary" data-toggle="modal">Добавить документ</a></div>
+			<div class="col-md-12 text-left">
+			<ul>
+				{%if files%}
+					{%for file in files%}
+						<li class="file">
+							<ul>
+								<li class="file-elem"><a href="{{file.document.url}}">{{file.name}}</a></li>
+								<li class="file-elem">{{file.document.size}}b</li>
+								<li class="file-elem"><h6>{{file.date_pub}}</h6></li>
+							</ul>
+						</li>
+					{%endfor%}
+				{%else%}
+					<li class="file">Файлы отсутствуют</li>
+				{%endif%}
+			</ul>
+			</div>
+		</div>
+		<div id="comments" class="row text-left tab-pane fade in active">
+			<div class="col-md-4">
+				<h4>Коментарии</h4>
+			</div>
+			<div class="col-md-8 text-right"><a href="#myModal" class="btn btn-primary" data-toggle="modal">Добавить коментарий</a></div>
+			<div class="col-md-12 text-left">
+			{%if comments%}
+				{%for comment in comments%}
+					<div class="col-md-1">{{comment.user}}</div>
+					<div class="col-md-9">
+						<p class="text-left">{{comment.text}}</p>
+						<p><h6 class="text-right">{{comment.date_pub}}</h6></p>
+					</div>
+					<div class="col-md-2">
+						<p>Приложенный файл</p>
+						{%if comment.file%}
+							<p><a href="{{comment.file.document.url}}">{{comment.file.name}}</a></p>
+							<p>{{comment.file.document.size}}b</p>
+						{%else%}
+							<p>Файл отсутствует</p>
+						{%endif%}
+					</div>
+				{%endfor%}
+			{% else %} 
+				<ul><li>Коментарии отсутствуют</li></ul>
+			{% endif %}
+			</div>
+		</div>
+		</div>
+		<div id="myModal" class="modal fade">
+  		<form action="" method="post" enctype="multipart/form-data" class="text-left form-horizontal">
+  		<div class="modal-dialog">
+    		<div class="modal-content">
+      			<!-- Заголовок модального окна -->
+      			<div class="modal-header">
+        			<button type="button" class="close" data-dismiss="modal" aria-hidden="true">×</button>
+        			<h4 class="modal-title">Добавить коментарий</h4>
+      			</div>
+      			<!-- Основное содержимое модального окна -->
+      			<div class="modal-body" style="padding:15px;">
+        			
+						{%csrf_token%}
+						
+							<div class="form-group">
+			    				<label for="inputname" class="col-sm-2 control-label">Пользователь:</label>
+			    				<div class="col-sm-10">
+			      					<input type="text" class="form-control" id="inputname" name="user" placeholder="Имя пользователя">
+			    				</div>
+							</div>
+							<div class="form-group">
+			    				<label for="inputcomment" class="col-sm-2 control-label">Коментарий</label>
+			    				<div class="col-sm-10">
+				    				<textarea name="text" id="inputcomment" cols="75" rows="5" class="form-control" placeholder="Коментарий"></textarea>
+			    				</div>
+							</div>
+							<input type="hidden" name="is_comment" value="True">
+					
+      			</div>
+      			<!-- Футер модального окна -->
+      			<div class="modal-footer">
+        			<button type="button" class="btn btn-default" data-dismiss="modal">Закрыть</button>
+        			<button type="submit" class="btn btn-primary">Отправить</button>
+      			</div>
+    		</div>
+  		</div>
+  		</form>
+	</div>
+	<div id="myModal1" class="modal fade">
+  		<form action="/uploadfile/" method="post" id="fileup" enctype="multipart/form-data" class="text-left">
+  		<div class="modal-dialog">
+    		<div class="modal-content">
+      			<!-- Заголовок модального окна -->
+      			<div class="modal-header">
+        			<button type="button" class="close" data-dismiss="modal" aria-hidden="true">×</button>
+        			<h4 class="modal-title">Добавить документ</h4>
+      			</div>
+      			<!-- Основное содержимое модального окна -->
+      			<div class="modal-body" style="padding:15px;">
+        			
+						{%csrf_token%}
+						
+							<div class="form-group">
+			    				<label for="inputfilename" class="col-sm-3 control-label">Имя файла</label>
+			    				<div class="col-sm-9">
+			      					<input type="text" class="form-control" id="inputfilename" name="name" placeholder="Введите имя файла">
+			    				</div>
+							</div>
+							<div class="form-group">
+			    				<label for="document" class="col-sm-3 control-label">Файл</label>
+			    				<div class="col-sm-9">
+				    				<input type="file" name="document" id="document">
+			    				</div>
+			    				<input type="hidden" name="parent" value="task">
+			    				<input type="hidden" name="parent_id" value="{{task.id}}">
+							</div>
+						<input type="text" name="parents" class="hidden" value="{{d.id}}">
+					
+      			</div>
+      			<!-- Футер модального окна -->
+      			<div class="modal-footer">
+        			<button type="button" class="btn btn-default" data-dismiss="modal">Закрыть</button>
+        			<button type="submit" class="btn btn-primary">Загрузить</button>
+      			</div>
+    		</div>
+  		</div>
+  		</form>
+	</div>
+	</div>
+{%endblock%}
